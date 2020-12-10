@@ -8,21 +8,26 @@
 		<version>2.4.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.netflix</groupId>
-	<artifactId>server</artifactId>
+	<groupId>com.example</groupId>
+	<artifactId>netflix-clone</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>Springboot-Server</name>
-	<description>netflix clone project with react and spring boot</description>
+	<name>netflix-clone</name>
+	<description>React RESTAPI project for spring boot</description>
 
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis.spring.boot</groupId>
+			<artifactId>mybatis-spring-boot-starter</artifactId>
+			<version>2.1.4</version>
 		</dependency>
 
 		<dependency>
