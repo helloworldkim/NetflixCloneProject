@@ -8,7 +8,7 @@ export default class Login extends Component {
             <div className='outer'>
                 <div className='inner'>
                     <form>
-                        <h3>로그인</h3>
+                        <h3 style={{color:'white'}}>로그인</h3>
                         <div className="form-group">
                             <input type="email" className="form-control" placeholder="이메일 주소" />
                         </div>

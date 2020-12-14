@@ -7,6 +7,6 @@ export default axios.create({
     params: {
         part: 'snippet',
         key: MYKEY,
-        content: '공식 예고편'
+        maxResults: 1
     }
 });

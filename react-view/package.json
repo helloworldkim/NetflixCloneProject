@@ -17,6 +17,7 @@
     "react-scripts": "4.0.1",
     "react-slick": "0.27.13",
     "reactstrap": "8.7.1",
+    "slick-carousel": "1.8.1",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
