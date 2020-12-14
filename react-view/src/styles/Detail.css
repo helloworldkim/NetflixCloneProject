@@ -1,0 +1,56 @@
+.bg-color {
+    background: #181818;
+}
+
+.Modal {
+    width: 90%;
+    background-color: #181818;
+}
+
+.contentFont {
+    font-size: large;
+    color: #F7F7F7;
+}
+
+.detailFont {
+    font-size: medium;
+    color: #F7F7F7;
+}
+
+.sfont {
+    font-size: x-large;
+    font-weight: bold;
+    color: #F7F7F7;
+}
+
+.custom {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.Third-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0,0,0,0.16);
+}
+
+.Third {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 320px;
+    border-radius: 10px;
+    background-color: #181818;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+    
+}
+
+.my-modal .modal-content {
+    background-color: #181818;
+}
