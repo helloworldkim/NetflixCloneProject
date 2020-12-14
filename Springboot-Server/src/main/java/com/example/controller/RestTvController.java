@@ -24,6 +24,14 @@ public class RestTvController {
 		
 		return result;
 	}
+	//TV 1개 디테일정보 호출 메서드
+		@GetMapping(value ="/api/tv/detail")
+		public String searchTvShowsByQueryString(
+				@RequestParam(value = "id",required = true) String id) {
+			String result=tvService.getTvDetails(id);
+			
+			return result;
+		}
 	
 	//tmdb api TV의 id값 전달해주면 해당값과 비슷한 tv 프로그램을 찾아서 전달해줌
 	@GetMapping(value ="/api/tv/similar")

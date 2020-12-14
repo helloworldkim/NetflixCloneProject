@@ -16,10 +16,19 @@ public class RestMovieController {
 	@Autowired
 	MovieService movieService;
 	
+	//특정 단어로 검색해서 데이터 호출
 	@GetMapping(value ="/api/movie/search")
 	public String searchTvShowsByQueryString(@RequestParam(value = "pageNo",defaultValue = "1")String page,
 			@RequestParam(value = "query",required = true) String query) {
 		String result=movieService.searchMoviesByQueryString(page, query);
+		
+		return result;
+	}
+	//영화 1개 디테일정보 호출 메서드
+	@GetMapping(value ="/api/movie/detail")
+	public String searchTvShowsByQueryString(
+			@RequestParam(value = "id",required = true) String id) {
+		String result=movieService.getMovieDetails(id);
 		
 		return result;
 	}
