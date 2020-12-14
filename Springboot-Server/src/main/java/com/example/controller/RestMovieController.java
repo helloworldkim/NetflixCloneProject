@@ -24,9 +24,17 @@ public class RestMovieController {
 		
 		return result;
 	}
+		//영화 1개 크레딧정보 호출 메서드
+		@GetMapping(value ="/api/movie/credits")
+		public String getMovieCredits(
+				@RequestParam(value = "id",required = true) String id) {
+			String result=movieService.getMovieCredits(id);
+			
+			return result;
+		}
 	//영화 1개 디테일정보 호출 메서드
 	@GetMapping(value ="/api/movie/detail")
-	public String searchTvShowsByQueryString(
+	public String getMovieDetails(
 			@RequestParam(value = "id",required = true) String id) {
 		String result=movieService.getMovieDetails(id);
 		
