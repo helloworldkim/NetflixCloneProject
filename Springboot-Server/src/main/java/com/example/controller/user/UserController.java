@@ -15,10 +15,10 @@ public class UserController {
 	@Autowired
 	UserMapper mapper;
 
-	/*@PostMapping
+	@PostMapping
 	void registerUser(@RequestBody UserVO user) {
 		mapper.insertUser(user);
-	}*/
+	}
 
 	@GetMapping
 	int isUser(@RequestParam("id") String id) {
