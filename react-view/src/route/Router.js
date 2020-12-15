@@ -16,6 +16,12 @@ class Router extends Component {
                         <Switch>
                             <Route exact path='/' component={Main} />
                             <Route path='/login' component={Login} />
+                            <Route
+                                path="/login"
+                                render={props => (
+                                    <Login login={Login} {...props} />
+                                )}
+                            />
                             <Route path='/join' component={Join} />
                             <Route path='/myContent' component={Favorite} />
                             <Route path='/newContent' component={NewContent} />
