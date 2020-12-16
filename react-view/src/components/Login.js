@@ -8,6 +8,13 @@ function Login({ authenticated, login, location }) {
     const [password, setPassword] = useState('');
 
     const handleClick = () => {
+        if (email === '') {
+            alert('이메일을 입력하세요!');
+            return;
+        } else if (password === '') {
+            alert('비밀번호를 입력하세요!');
+            return;
+        }
         try {
             login({ email, password });
         } catch (e) {

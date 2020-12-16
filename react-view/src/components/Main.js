@@ -3,31 +3,47 @@ import React, { Component, useState } from "react";
 import ApiService from '../apis/ApiService';
 
 class MainPage extends Component {
-    handleGenre = async (i, genre) => {
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            genre: ['Action', 'Adventure', 'Comedy', 'Documentary', 'Family', 'Fantasy', 'Horror'],
+            result: {},
+        }
+    }
+    
+    async handleGenre(i, genre) {
         await ApiService.genreMovie(i, genre)
-            .then(res => {
-                if(genre === 'Action' && 'Adventure') {
-                    
-                }
-                if(genre === 'Comedy') {
-
-                }
-                if(genre === 'Documentary') {
-
-                }
-                if(genre === 'Family') {
-
-                }
-                if(genre === 'Fantasy') {
-
-                }
-                if(genre === 'Horror') {
-
-                }
+        .then(res => {
+                this.setState({ result: res.results }); 
+                console.log("TEST1");
             })
-            .catch(err => {
+        .catch(err => {
                 console.error('genreMovie get 오류 : ', err);
                 alert('영화 장르 불러오기 오류');
+                return;
+            });
+    }
+
+    handlePopular(i) {
+        ApiService.popularMovie(i)
+            .then(res => {
+                console.log('인기영화 불러오기 성공!');
+            })
+            .catch(err => {
+                console.error('handlePopular 오류:', err);
+                alert('인기영화를 불러오지 못했습니다. \n 관리자에게 문의하세요!');
+            });
+    }
+
+    handleVideo(id) {
+        ApiService.videoMovie(id)
+            .then(res => {
+                console.log('인기영화 불러오기 성공!');
+            })
+            .catch(err => {
+                console.error('handleVideo 오류:',err);
+                alert('동영상을 불러오지 못했습니다. \n 관리자에게 문의하세요!');
             });
     }
 
@@ -36,8 +52,21 @@ class MainPage extends Component {
 
  //   }
 
-    render() {
+    componentDidMount() {
+        for (var i= 0; i < this.state.genre.length; i++) {
+            //console.log(this.state.genre[i]);
+            // handleGenre
+            //debugger;
+            this.handleGenre(1, this.state.genre[i]);
+   
+        }
+        this.handlePopular(1);
 
+    }
+
+
+
+    render() {
         return (
             <div style={{backgroundColor:'#181818'}}>
                 <div className='row'>
