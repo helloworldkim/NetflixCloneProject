@@ -79,15 +79,18 @@ public class MovieService {
 		}
 		String url = "http://api.themoviedb.org/3/discover/movie";
 		String api_key = "2daa7f8ee3c810361492a3382e06545d";
+		String language = "ko-KR";
 		// RestTemplate 생성
 		RestTemplate rt = new RestTemplate();
 		UriComponents builder = UriComponentsBuilder.fromHttpUrl(url)
 				.queryParam("page", page)
-				.queryParam("genre", genre)
+				.queryParam("with_genres", genre)
+				.queryParam("language", language)
 				.queryParam("api_key", api_key)
 				.build(false); // 자동으로 encode해주는 것을 막기 위해
 																							// false
 		String uri = builder.toUriString();
+		System.out.println(uri);
 		ResponseEntity<String> response = rt.exchange(
 				uri,
 				HttpMethod.GET,
@@ -97,7 +100,7 @@ public class MovieService {
 	}
 
 	public String popularMovies(String page) {
-		String language = "en-KO";
+		String language = "ko-KR";
 		String url = "https://api.themoviedb.org/3/movie/popular";
 		String api_key = "2daa7f8ee3c810361492a3382e06545d";
 		// RestTemplate 생성
@@ -120,7 +123,7 @@ public class MovieService {
 	public String getSortByMovies(String page, String sort) {
 //		https://api.themoviedb.org/3/discover/movie?api_key=2daa7f8ee3c810361492a3382e06545d&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1
 		String url = "https://api.themoviedb.org/3/discover/movie";
-		String language = "en-KO";
+		String language = "ko-KR";
 		String api_key = "2daa7f8ee3c810361492a3382e06545d";
 		// RestTemplate 생성
 		RestTemplate rt = new RestTemplate();
@@ -226,7 +229,7 @@ public class MovieService {
 	public String getMovieDetails(String id) {
 //		https://api.themoviedb.org/3/movie/{movie_id}?api_key=<<api_key>>&language=en-US
 		String url = "https://api.themoviedb.org/3/movie/"+id;
-		String language = "en-KO";
+		String language = "ko-KR";
 		String api_key ="2daa7f8ee3c810361492a3382e06545d";
 		// RestTemplate 생성
 	        RestTemplate rt = new RestTemplate();
