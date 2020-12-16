@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTDMapper3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.NetflixCloneMapper">
+	<select id="fetchMovie" resultType="com.example.vo.NetflixCloneVO" >
+		SELECT *
+		  FROM favorite_movie_list
+	  ORDER BY id
+	</select>
+	
+	<insert id="addMovie"
+		parameterType="com.example.vo.NetflixCloneVO">
+		INSERT INTO favorite_movie_list
+			(
+				movie_id
+				movie_original_title,
+				movie_save_date
+				user_email
+			)
+		VALUES
+			(
+				#{moive_id}
+				#{movie_original_title},
+				NOW()
+				#{user_email}
+			)
+		
+	</insert>
+	
+	<delete id="removeMovie" parameterType="Long">
+		DELETE FROM favorite_movie_list WHERE id = #{id}
+	</delete>
+
+</mapper>
