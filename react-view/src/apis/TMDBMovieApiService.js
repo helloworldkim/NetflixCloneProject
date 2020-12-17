@@ -3,6 +3,9 @@ import Axios from 'axios';
 const SPRING_API_URL = 'http://localhost:8090/api/movie/';
 
 class TMDBMovieApiService {
+  getGenreList(genre) {
+    return Axios.get(SPRING_API_URL + 'genre?genre=' + genre);
+  }
   getDatasByGenre(genre) {
     // console.log('적혀있는 장르값:', genre);
     return Axios.get(SPRING_API_URL + 'genre?genre=' + genre);

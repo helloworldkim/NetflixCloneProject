@@ -5,33 +5,65 @@ import Row from './Row';
 class MainPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      //   genre: ['28', '12', '35', '99', '10751', '14', '27'],
+      genre: [
+        'Action',
+        'Adventure',
+        'Comedy',
+        'Documentary',
+        'Family',
+        'Fantasy',
+        'Horror',
+      ],
+    };
   }
   componentDidMount() {
-    TMDBMovieApiService.getDatasByGenre('Action')
-      .then((res) => {
-        const actions = res.data.results;
-        console.log(actions, '액션값');
-        this.setState({ actions: actions }, () => {});
-      })
-      .catch((err) => console.log(err));
-
-    TMDBMovieApiService.getDatasByGenre('Comedy')
-      .then((res) => {
-        const comedys = res.data.results;
-        console.log(comedys, '코미디값');
-        this.setState({ comedys: comedys }, () => {});
-      })
-      .catch((err) => console.log(err));
-    TMDBMovieApiService.getDatasByGenre('Horror')
-      .then((res) => {
-        const horrors = res.data.results;
-        console.log(horrors, '호러값');
-        this.setState({ horrors: horrors }, () => {});
-      })
-      .catch((err) => console.log(err));
+    this.getAllMoviesByGenre();
   }
-
+  getAllMoviesByGenre = async () => {
+    for (let i = 0; i < this.state.genre.length; i++) {
+      //debugger;
+      await TMDBMovieApiService.getGenreList(this.state.genre[i])
+        .then((res) => {
+          //console.log(res.data.results);
+          switch (i) {
+            case 0: // 액션
+              this.setState({ actions: res.data.results.slice(10) }, () => {});
+              break;
+            case 1: // 어드벤처
+              this.setState(
+                { adventures: res.data.results.slice(10) },
+                () => {},
+              );
+              break;
+            case 2: // 코미디
+              this.setState({ comedys: res.data.results.slice(10) }, () => {});
+              break;
+            case 3: // 다큐멘터리
+              this.setState(
+                { documentarys: res.data.results.slice(10) },
+                () => {},
+              );
+              break;
+            case 4: // 가족 영화
+              this.setState({ familys: res.data.results.slice(10) }, () => {});
+              break;
+            case 5: // 판타지
+              this.setState({ fantasys: res.data.results.slice(10) }, () => {});
+              break;
+            case 6: // 호러
+              this.setState({ horrors: res.data.results.slice(10) }, () => {});
+              break;
+            default:
+              break;
+          }
+        })
+        .catch((err) => {
+          console.error('getGenreList get 오류 : ', err);
+        });
+    }
+  };
   render() {
     return (
       <div style={{ backgroundColor: '#181818' }}>
@@ -65,7 +97,11 @@ class MainPage extends Component {
           <div className="col">
             <Row
               actions={this.state.actions}
+              adventures={this.state.adventures}
               comedys={this.state.comedys}
+              documentarys={this.state.documentarys}
+              familys={this.state.familys}
+              fantasys={this.state.fantasys}
               horrors={this.state.horrors}
             />
           </div>
