@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Container } from 'reactstrap';
-import Router from '../route/Router';
-import Navbar from '../route/Navbar';
-import MainNavbar from '../route/MainNavbar';
+import React, { Component } from "react";
+import { Container } from "reactstrap";
+import Router from "../route/Router";
+import Navbar from "../route/Navbar";
+import MainNavbar from "../route/MainNavbar";
 
-import '../styles/App.css';
+import "../styles/App.css";
 
 class App extends Component {
   render() {
@@ -20,4 +20,4 @@ class App extends Component {
   }
 }
 
-export default App;;
+export default App;
