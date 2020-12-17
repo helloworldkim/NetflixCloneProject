@@ -1,13 +1,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, {useState } from 'react';
+import React, { useState } from 'react';
 import '../styles/Login.css';
 import { Redirect } from 'react-router-dom';
+
+import AuthenticationService from '../apis/AuthenticationService';
 
 function Login({ authenticated, login, location }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleClick = () => {
+    
+    const handleLoginOk = async(login) => {
         if (email === '') {
             alert('이메일을 입력하세요!');
             return;
@@ -22,7 +25,17 @@ function Login({ authenticated, login, location }) {
             setEmail('');
             setPassword('');
         }
+        AuthenticationService
+            .executeJwtAuthenticationService(this.state.email, this.state.password)
+            .then((response) => {
+            AuthenticationService.registerSuccessfulLoginForJwt(this.state.email,response.data.token)
+            this.props.history.push(`/main/${this.state.email}`)
+        }).catch( () =>{
+            this.setState({showSuccessMessage:false})
+            this.setState({hasLoginFailed:true})
+        })
     };
+
 
     const { from } = location.state || { from: { pathname: "/" } };
     if (authenticated) return <Redirect to={from} />;
@@ -52,7 +65,7 @@ function Login({ authenticated, login, location }) {
                     <button
                         type="submit" className="btn btn-lg btn-block"
                         style={{ backgroundColor: 'red', color: 'white' }}
-                        onClick={handleClick}>LOGIN</button>
+                        onClick={handleLoginOk}>LOGIN</button>
                     <p className="forgot-password text-right">
                         Forgot <a href="#">password?</a>
                     </p>
@@ -65,6 +78,6 @@ function Login({ authenticated, login, location }) {
             </div>
         </div>
     );
-}
+};
 
 export default Login;
