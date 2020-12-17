@@ -92,8 +92,9 @@ class DetailContentCompoent extends Component {
     var seperactor = ',';
     var tempString = '';
     for (var i = 0; i < Array.length; i++) {
-      tempString += Array[i] + seperactor;
-      if (i === Array.length - 1) {
+      if (i < Array.length - 1) {
+        tempString += Array[i] + seperactor;
+      } else if (i === Array.length - 1) {
         tempString += Array[i];
       }
     }
