@@ -1,99 +1,264 @@
-import React, { useState } from 'react';
-import {Modal} from 'reactstrap';
+import React, { Component } from 'react';
+import { Modal } from 'reactstrap';
+import TMDBMovieApiService from '../apis/TMDBMovieApiService';
 
-const DetailContent = (props) => {
-    // in : youtube 동영상, 영화제목, 개봉연도, 러닝타임, 줄거리, 출연, 장르, 영화 특징, 댓글, 비슷한 콘텐츠, (찜)
-    // out : 댓글, 찜
-    const {
-        title='프리키 데스데이',
-    } = props;
-    
-    const [modal, setModal] = useState(false);
+class DetailContentCompoent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: this.props.id,
+      movie: this.props.movie,
+      modal: false, //기본 모달값 false
+      details: {},
+      genres: [],
+      //전달받은 포스터 이미지를 그대로 보여줌
+      poster_image:
+        'http://image.tmdb.org/t/p/w500' + this.props.movie.poster_path,
+    };
+  }
+  //이미지 클릭시 필요한 데이터를 모두 호출 하는메서드
+  getAllInfo = () => {
+    this.getMovieDetails();
+    this.getMoviesYoutubeKey();
+    this.getMovieCredits();
+    this.getSimilarMovies();
+  };
 
-    const toggle = () => setModal(!modal);
-
-    return (
-        <div>
-            <a className='btn bg-transparent' onClick={toggle}>
-                {/* {images} */}
-                <img src={'https://img.movist.com/?img=/x00/05/38/94_p1.jpg'} width='180px' alt='new' style={{borderRadius: 5}}/>
-            </a>
-            <Modal isOpen={modal} toggle={toggle} size='lg' className='my-modal' style={{maxWidth: '900px', width: '80%'}}>
-                <div className='container'>
-                    <div className='row'>
-                        <div className='col'>
-                            <div className='vedio'>
-                                <iframe title='Youtube Video Player'
-                                        className='video'
-                                        allowFullScreen
-                                        style={{width: '100%', height: '50vh', margin: 0, padding: 0}}
-                                        src='https://youtube.com/embed/EmVhvlIgxfU'>
-                                </iframe>
-                                <div>
-                                    <h1 style={{color: 'white'}}>{title}</h1>
-                                    <div style={{flexDirection: 'row'}}>
-                                        <input className='btn btn-light btn-lg' type='button' value='▶ 재생' style={{margin:5}}/>
-                                        <input className='btn btn-light btn-lg' type='button' value='❤' style={{margin:5, borderRadius: 20}}/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='row' style={{paddingLeft: '24px', marginTop: 15}}>
-                        <div className='col-8'>
-                            <div className='content1'>
-                                <p className='contentFont'>개봉연도 러닝타임</p>
-                                <p className='contentFont' style={{marginTop: 15}}>줄거리</p>
-                            </div>
-                        </div>
-                        <div className='col-4'>
-                            <div className='content2'>
-                                <div style={{flexDirection: 'row', marginBottom: 10}}>
-                                    <a style={{textDecoration: 'none', color: '#777777'}}>출연</a>{'  '}
-                                    <a className='detailFont'>황감자</a>
-                                </div>
-                                <div style={{flexDirection: 'row', marginBottom: 10}}>
-                                    <a style={{textDecoration: 'none', color: '#777777'}}>장르</a>{'  '}
-                                    <a className='detailFont'>황감자</a>
-                                </div>
-                                <div style={{flexDirection: 'row', marginBottom: 10}}>
-                                    <a style={{textDecoration: 'none', color: '#777777'}}>영화 특징</a>{'  '}
-                                    <a className='detailFont'>황감자</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='row' style={{paddingLeft: '24px', marginTop: 20}}>
-                        <div className='col'>
-                            <form className='form-inline' style={{width: '100%'}}>
-                                <textarea placeholder='댓글을 입력해주세요' className='form-control' rows='2' cols='100'/>
-                                <button type='submit' className='btn btn-danger btn-lg' style={{margin: 10}}>댓글</button> 
-                            </form>
-                            <div className='comment'>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='row' style={{paddingLeft: '24px', marginTop: 15}}>
-                        <div className='col'>
-                            <div className='similar' style={{marginTop: 20}}>
-                                <p className='sfont'>비슷한 콘텐츠</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className='row' style={{marginBottom: 20, paddingLeft: '24px'}}>
-                        <div className='col'>
-                            <div className='similar'>
-                                <img src={'https://img.movist.com/?img=/x00/05/38/94_p1.jpg'} width='180px' alt='new' style={{marginRight: 10, borderRadius: 7}}/>
-                                <img src={'https://img.movist.com/?img=/x00/05/38/94_p1.jpg'} width='180px' alt='new' style={{marginRight: 10, borderRadius: 7}}/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                                
-            </Modal>
-        </div>
+  //영화 디테일을 들고오는 메서드
+  getMovieDetails = async () => {
+    let res = await TMDBMovieApiService.getMovieDetails(this.state.id);
+    let genres = res.data.genres.map((item) => {
+      return item.name;
+    });
+    this.setState(
+      {
+        details: res.data,
+        genres: genres,
+      },
+      () => {
+        console.log('눌렀을때 디테일값!', this.state.details);
+        // console.log('눌렀을때 장르값!', this.state.genres);
+      },
     );
+  };
+  //유튜브 키값을 들고오는 메서드
+  getMoviesYoutubeKey = async () => {
+    let res = await TMDBMovieApiService.getYoutubeKey(this.state.id);
+    //유튜브 영상이 있는경우 키값을 저장
+    if (res.data.results[0] !== undefined) {
+      console.log('youtubeKey데이터:', res.data.results[0].key);
+      //대표 유튜브영상 1개만 들고와서 저장함
+      this.setState(
+        {
+          key:
+            'https://youtube.com/embed/' +
+            res.data.results[0].key +
+            '?autoplay=1',
+        },
+        () => {
+          // console.log('눌렀을때 youtubeKey값!', this.state.key);
+        },
+      );
+      //없는경우 key를 false로 저장함
+    } else {
+      this.setState({ key: false });
+    }
+  };
+  //참여 배우명단을 불러오는 메서드
+  getMovieCredits = async () => {
+    let res = await TMDBMovieApiService.getCredits(this.state.id);
+    let cast = res.data.cast.slice(0, 6).map((item) => {
+      return item.name;
+    });
+    // console.log('참여 스테프정보:', res.data);
+    // console.log('참여 배우:', res.data.cast);
+    this.setState(
+      {
+        cast: cast,
+      },
+      () => {
+        // console.log('눌렀을때 cast값!', this.state.cast);
+      },
+    );
+  };
+  getSimilarMovies = async () => {
+    let res = await TMDBMovieApiService.getSimilarMovies(this.state.id);
+    console.log('유사한영화데이터들', res.data.results);
+    let similarMovies = res.data.results;
+    this.setState({ similarMovies: similarMovies });
+  };
+  //전달받은 배열을 콤마로 구분한 String으로 만들어주는 메서드
+  seperactor = (Array) => {
+    var seperactor = ',';
+    var tempString = '';
+    for (var i = 0; i < Array.length; i++) {
+      tempString += Array[i] + seperactor;
+      if (i === Array.length - 1) {
+        tempString += Array[i];
+      }
+    }
+    return tempString;
+  };
+  //true,false 값을 반대로 전환시키는 메서드
+  toggle = () => {
+    this.setState({ modal: !this.state.modal });
+  };
 
+  render() {
+    return (
+      <div>
+        <div className="btn bg-transparent" onClick={this.toggle}>
+          {/* {images} */}
+          <img
+            src={this.state.poster_image}
+            width="180px"
+            alt="new"
+            style={{ borderRadius: 5 }}
+            onClick={this.getAllInfo}
+          />
+        </div>
+        <Modal
+          isOpen={this.state.modal}
+          toggle={this.toggle}
+          size="lg"
+          className="my-modal"
+          style={{ maxWidth: '900px', width: '80%' }}
+        >
+          <div className="container">
+            <div className="row">
+              <div className="col">
+                <div className="vedio">
+                  {this.state.key ? (
+                    <iframe
+                      title="Youtube Video Player"
+                      className="video"
+                      allowFullScreen
+                      style={{
+                        width: '100%',
+                        height: '50vh',
+                        margin: 0,
+                        padding: 0,
+                      }}
+                      allow="autoplay"
+                      src={this.state.key}
+                    ></iframe>
+                  ) : (
+                    'Youtube영상이 없습니다'
+                  )}
+
+                  <div>
+                    <h1 style={{ color: 'white' }}>
+                      {this.state.details && this.state.details.title}
+                    </h1>
+                    <div style={{ flexDirection: 'row' }}>
+                      <input
+                        className="btn btn-light btn-lg"
+                        type="button"
+                        value="▶ 재생"
+                        style={{ margin: 5 }}
+                      />
+                      <input
+                        className="btn btn-light btn-lg"
+                        type="button"
+                        value="❤"
+                        style={{ margin: 5, borderRadius: 20 }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="row" style={{ paddingLeft: '24px', marginTop: 15 }}>
+              <div className="col-8">
+                <div className="content1">
+                  <p className="contentFont">
+                    {this.state.details.release_date &&
+                      this.state.details.release_date}{' '}
+                    {this.state.details.runtime && this.state.details.runtime}분
+                  </p>
+                  <p className="contentFont" style={{ marginTop: 15 }}>
+                    {this.state.details.overview
+                      ? this.state.details.overview
+                      : '줄거리 요약이 없습니다'}
+                  </p>
+                </div>
+              </div>
+              <div className="col-4">
+                <div className="content2">
+                  <div style={{ flexDirection: 'row', marginBottom: 10 }}>
+                    <div style={{ textDecoration: 'none', color: '#777777' }}>
+                      출연
+                    </div>
+                    <div className="detailFont">
+                      {this.state.cast && this.seperactor(this.state.cast)}
+                    </div>
+                  </div>
+                  <div style={{ flexDirection: 'row', marginBottom: 10 }}>
+                    <div style={{ textDecoration: 'none', color: '#777777' }}>
+                      장르
+                    </div>
+                    <div className="detailFont">
+                      {this.state.genres && this.seperactor(this.state.genres)}
+                    </div>
+                  </div>
+                  {/* <div style={{ flexDirection: 'row', marginBottom: 10 }}>
+                    <div style={{ textDecoration: 'none', color: '#777777' }}>
+                      영화 특징
+                    </div>
+                    <div className="detailFont">특징</div>
+                  </div> */}
+                </div>
+              </div>
+            </div>
+            <div className="row" style={{ paddingLeft: '24px', marginTop: 20 }}>
+              <div className="col">
+                <form className="form-inline" style={{ width: '100%' }}>
+                  <textarea
+                    placeholder="댓글을 입력해주세요"
+                    className="form-control"
+                    rows="2"
+                    cols="100"
+                  />
+                  <button
+                    type="submit"
+                    className="btn btn-danger btn-lg"
+                    style={{ margin: 10 }}
+                  >
+                    댓글
+                  </button>
+                </form>
+                <div className="comment"></div>
+              </div>
+            </div>
+            {/* 비슷한 콘텐츠 부분 */}
+            {/* <div className="row" style={{ paddingLeft: '24px', marginTop: 15 }}>
+              <div className="col">
+                <div className="similar" style={{ marginTop: 20 }}>
+                  <p className="sfont">비슷한 콘텐츠</p>
+                </div>
+              </div>
+            </div> */}
+            {/* <div
+              className="row"
+              style={{ marginBottom: 20, paddingLeft: '24px' }}
+            >
+              <div className="col">
+                <div className="similar">
+                  {this.state.similarMovies 
+            ? this.state.similarMovies.slice(0, 4).map((item) => {
+                return (
+                  <DetailContent id={item.id} movie={item}></DetailContent>
+                );
+              })
+            : ''}
+                </div>
+              </div>
+            </div> */}
+          </div>
+        </Modal>
+      </div>
+    );
+  }
 }
 
-export default DetailContent;
+export default DetailContentCompoent;
