@@ -40,6 +40,9 @@ class DetailContentCompoent extends Component {
       .then(res => {
         console.info('저장성공', res.state);
         alert("찜 했습니다.");
+        this.setState({
+          modal: false,
+        })
       })
       .catch(err => {
         console.error('ApiService.addMovies 에러', err);
@@ -48,11 +51,18 @@ class DetailContentCompoent extends Component {
   }
 
   handleMovieDelete = async () => {
-    await FavoriteMovieApiService.removeMovie(this.state.id)
+    await FavoriteMovieApiService.removeMovie(this.props.databaseid)
     .then(res => {
       console.info('삭제성공', res.state);
+      console.log('DB에 저장된 id값 : ', this.props.databaseid);
       alert("삭제했습니다.");
       //리로드
+      this.props.loadFavoriteMovie();
+      this.setState({
+        modal: false,
+      });
+      // document.location.href='myContent';
+
     })
     .catch(err => {
       console.error('ApiService.removeMovie 에러', err);
@@ -221,7 +231,7 @@ class DetailContentCompoent extends Component {
                         value="▶ 재생"
                         style={{ margin: 5 }}
                       />
-                      {sessionStorage.getItem("user") != null ?
+                      {/* {sessionStorage.getItem("user") != null ?
                         (<input
                           className="btn btn-light btn-lg"
                           type="button"
@@ -237,7 +247,21 @@ class DetailContentCompoent extends Component {
                           onClick={() => this.handleMovieDelete(this.state.id)}
                         />) :
                         '' 
-                      } 
+                      } */}
+                      <input
+                          className="btn btn-light btn-lg"
+                          type="button"
+                          value="❤"
+                          style={{ margin: 5, borderRadius: 20 }}
+                          onClick={() => this.handleMovieSave()}
+                        />
+                        <input
+                          className="btn btn-light btn-lg"
+                          type="button"
+                          value="❌ "
+                          style={{ margin: 5, borderRadius: 20 }}
+                          onClick={() => this.handleMovieDelete(this.state.id)}
+                        />
                     </div>
                   </div>
                 </div>

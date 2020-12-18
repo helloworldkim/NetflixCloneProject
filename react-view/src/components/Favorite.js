@@ -11,23 +11,21 @@ class Favorite extends Component {
         }
     }
     componentDidMount(){
-        
+        //로그인 세션이 있을때 그 유저아이디에따라 this.loadFavoriteMovie()함수 실행시키기
         this.loadFavoriteMovie();
     }
     loadFavoriteMovie = async () => {
-        await FavoriteMovieApiService.fetchMovies()
+        await FavoriteMovieApiService.fetchMovie()
             .then(res => {
                 console.log(res.data);
-                // console.log('poster_path : ', res.data.movie_poster_path);
                 this.setState({movies:res.data},()=>{
                     console.log(this.state.movies);
                 })
-                // setMovies([
-                //     ...movies,
-                //     {  movie_id: res.data.movie_id, movie_poster_path: res.data.movie_poster_path },
-                // ]);
+                
             });
-    };
+
+        };
+
     render() {
         return (
             <section className='bg-color'>
@@ -40,14 +38,19 @@ class Favorite extends Component {
                         <h1 style={{color: 'white'}}>내가 찜한 목록</h1>
                         <div className='container-fluid'>
                             <div className='row'>
-                                <div className='col'>
+                                {/* <div className='col'> */}
                                     {this.state.movies ? this.state.movies.map((item) => {
                                         return (
-                                            <DetailContent id={item.id} movie={item}></DetailContent>
+                                            <DetailContent
+                                                databaseid={item.id}
+                                                id={item.movie_id}
+                                                movie={item}
+                                                loadFavoriteMovie={this.loadFavoriteMovie}
+                                            ></DetailContent>
                                         );                                
                                         })
                                     :''}
-                                </div>
+                                {/* </div> */}
                             </div>
                         </div>
                     </div>
