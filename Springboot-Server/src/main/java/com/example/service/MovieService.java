@@ -103,15 +103,19 @@ public class MovieService {
 		String language = "ko-KR";
 		String url = "https://api.themoviedb.org/3/movie/popular";
 		String api_key = "2daa7f8ee3c810361492a3382e06545d";
+		//투표점수기준 정렬시킴
+		String sort_by = "vote_count.desc";
 		// RestTemplate 생성
 		RestTemplate rt = new RestTemplate();
 		UriComponents builder = UriComponentsBuilder.fromHttpUrl(url)
 				.queryParam("page", page)
 				.queryParam("language", language)
+				.queryParam("sort_by", sort_by)
 				.queryParam("api_key", api_key)
 				.build(false); // 자동으로 encode해주는 것을 막기 위해
 																							// false
 		String uri = builder.toUriString();
+		System.out.println(uri);
 		ResponseEntity<String> response = rt.exchange(
 				uri,
 				HttpMethod.GET,
@@ -319,6 +323,31 @@ public class MovieService {
 			        		String.class
 		   		);
 		        return response.getBody().toString();
+		}
+
+		//평점으로 검색하기
+		public String getTopratedMovies(String page) {
+//			https://api.themoviedb.org/3/movie/top_rated?api_key=<<api_key>>&language=en-US&page=1
+			String api_key ="2daa7f8ee3c810361492a3382e06545d";
+			String language = "ko-KR";
+			String url = "https://api.themoviedb.org/3/movie/top_rated";
+			
+			// RestTemplate 생성
+		        RestTemplate rt = new RestTemplate();
+				UriComponents builder = UriComponentsBuilder.fromHttpUrl(url)
+						.queryParam("page", page)
+						.queryParam("language", language)
+						.queryParam("api_key", api_key)
+						.build(false);    //자동으로 encode해주는 것을 막기 위해 false
+				String uri = builder.toUriString();
+				System.out.println(uri);
+		        ResponseEntity<String> response =  rt.exchange(
+		        		uri,
+		        		HttpMethod.GET,
+		        		null,
+		        		String.class
+	   		);
+	        return response.getBody().toString();
 		}
 	
 
