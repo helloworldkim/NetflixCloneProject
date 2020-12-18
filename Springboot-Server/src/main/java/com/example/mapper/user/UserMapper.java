@@ -1,5 +1,7 @@
 package com.example.mapper.user;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -17,4 +19,7 @@ public interface UserMapper {
 
 	@Select({"SELECT count(*) FROM user WHERE email=#{user.email} AND password=#{user.password}"})
 	int getUser(@Param("user") UserVO user);
+	
+	
+	Map<String,Object> getUserInfo(UserVO user);
 }

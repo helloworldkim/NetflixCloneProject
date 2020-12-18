@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import com.example.mapper.user.UserMapper;
 import com.example.vo.user.UserVO;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 @RestController
@@ -28,18 +31,22 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	int login(@RequestBody UserVO user, HttpSession httpSession) {
+	Map<String,Object> login(@RequestBody UserVO user, HttpSession httpSession) {
+		System.out.println(user.toString());
 		int cnt = mapper.getUser(user);
-
+		Map<String,Object> myuser= new HashMap<>();
 		if (cnt == 1) {
+			myuser= mapper.getUserInfo(user);
+			System.out.println(myuser.toString());
 			httpSession.setAttribute("USERID_SESSION", user.getEmail());
 		}
-
-		return cnt;
+		return myuser;
 	}
 
-	@PostMapping("/logout")
-	void logout(HttpSession httpSession) {
+	@GetMapping("/logout")
+	String logout(HttpSession httpSession) {
+		System.out.println("로그아웃함");
 		httpSession.invalidate();
+		return "로그아웃";
 	}
 }
