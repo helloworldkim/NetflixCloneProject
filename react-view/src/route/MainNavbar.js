@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../styles/App.css';
 import * as Icon from 'react-bootstrap-icons';
+import SearchBar from '../components/SearchBar';
 
 class MainNavbar extends Component {
     render() {
@@ -26,10 +27,10 @@ class MainNavbar extends Component {
                         </li>
                     </ul>
                     <ul className="nav justify-content-end">
-                        <form className="form-inline" action="">
-                            <input className="form-control mr-sm-2" type="text" placeholder="Search" />
-                            <button className="btn btn-success" type="submit"><Icon.Search/></button>
-                        </form>
+                        <li>
+                            {/* <SearchBar handleSubmit={this.handleSubmit} handleChange={this.handleChange} /> */}
+                            <SearchBar />
+                        </li>
                         <li className="nav-item">
                             <a className="nav-link" href='/login' onClick={this.LoginPage} style={{ color: 'white' }}>로그인</a>
                         </li>

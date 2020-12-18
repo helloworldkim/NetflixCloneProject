@@ -6,7 +6,7 @@ import Favorite from '../components/Favorite';
 import Login from '../components/Login';
 import Main from '../components/Main';
 import NewContent from '../components/NewContent';
-import Movies from '../components/Movies';
+import SearchMovie from '../components/SearchMovie';
 
 class Router extends Component {
   render() {
@@ -18,7 +18,7 @@ class Router extends Component {
               <Route exact path="/" component={Main} />
               <Route path="/login" component={Login} />
               <Route path="/join" component={Join} />
-              <Route path="/movie" component={Movies} />
+              <Route path="/searchMovie" component={SearchMovie} />
               <Route path="/myContent" component={Favorite} />
               <Route path="/newContent" component={NewContent} />
             </Switch>

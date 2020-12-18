@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal } from 'reactstrap';
+import ApiService from '../apis/ApiService';
 import TMDBMovieApiService from '../apis/TMDBMovieApiService';
 
 class DetailContentCompoent extends Component {
@@ -14,8 +15,9 @@ class DetailContentCompoent extends Component {
       //전달받은 포스터 이미지를 그대로 보여줌
       poster_image:
         'http://image.tmdb.org/t/p/w500' + this.props.movie.poster_path,
-    };
-  }
+      };
+    }
+    
   //이미지 클릭시 필요한 데이터를 모두 호출 하는메서드
   getAllInfo = () => {
     this.getMovieDetails();
@@ -37,6 +39,7 @@ class DetailContentCompoent extends Component {
       },
       () => {
         console.log('눌렀을때 디테일값!', this.state.details);
+        console.log('this.state.poster_image : ', this.state.poster_image);
         // console.log('눌렀을때 장르값!', this.state.genres);
       },
     );
@@ -92,9 +95,8 @@ class DetailContentCompoent extends Component {
     var seperactor = ',';
     var tempString = '';
     for (var i = 0; i < Array.length; i++) {
-      if (i < Array.length - 1) {
-        tempString += Array[i] + seperactor;
-      } else if (i === Array.length - 1) {
+      tempString += Array[i] + seperactor;
+      if (i === Array.length - 1) {
         tempString += Array[i];
       }
     }
@@ -104,12 +106,20 @@ class DetailContentCompoent extends Component {
   toggle = () => {
     this.setState({ modal: !this.state.modal });
   };
-
+    
   render() {
     return (
       <div>
         <div className="btn bg-transparent" onClick={this.toggle}>
           {/* {images} */}
+          {(this.state.poster_image === 'http://image.tmdb.org/t/p/w500null') ?
+          <img
+            alt=""
+            src={"https://i.ytimg.com/vi/GV3HUDMQ-F8/maxresdefault.jpg"}
+            height="270"
+            width="180"
+            style={{margin: '5px'}}
+          /> :
           <img
             src={this.state.poster_image}
             width="180px"
@@ -117,6 +127,7 @@ class DetailContentCompoent extends Component {
             style={{ borderRadius: 5 }}
             onClick={this.getAllInfo}
           />
+  }
         </div>
         <Modal
           isOpen={this.state.modal}
