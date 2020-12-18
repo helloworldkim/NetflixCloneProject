@@ -31,6 +31,12 @@ public class NetflixCloneController {
 		return mapper.fetchMovie();
 	}
 	
+//	@GetMapping
+//	public List<NetflixCloneVO> fetchMovie(@PathVariable String user_email) {
+//		System.out.println("찜한목록볼 유저 이메일 => " + user_email);
+//		return mapper.fetchMovie(user_email);
+//	}
+	
 	@PostMapping
 	public void addMovie(@RequestBody NetflixCloneVO item) {
 		mapper.addMovie(item);
