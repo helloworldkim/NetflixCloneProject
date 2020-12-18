@@ -2,8 +2,22 @@ import React, { Component } from 'react';
 import '../styles/App.css';
 import * as Icon from 'react-bootstrap-icons';
 import SearchBar from '../components/SearchBar';
+import UserApiService from '../apis/UserApiService';
 
 class MainNavbar extends Component {
+    //Logout Func
+      onLogout = () => {
+        UserApiService.logoutOK()
+            .then(res => {
+                sessionStorage.removeItem("user");
+                alert('로그아웃이 완료되었습니다!');
+            })
+            .catch(err => {
+                console.error('UserApiService error : ', err);
+                alert('로그아웃 에러 \n 다시 시도하세요👻');
+            })
+        window.sessionStorage.removeItem("user");
+      }
     render() {
 
         return (
@@ -32,7 +46,15 @@ class MainNavbar extends Component {
                             <SearchBar />
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href='/login' onClick={this.LoginPage} style={{ color: 'white' }}>로그인</a>
+                        <div>
+                            {sessionStorage.getItem("user") == null ? 
+                            ( 
+                             <a className="nav-link" href='/login' onClick={this.LoginPage} style={{ color: 'white' }}>로그인</a>
+                            ) 
+                            :(
+                             <a className="nav-link" href='/logout' onClick={this.Logout} style={{ color: 'white' }}>로그아웃</a>
+                            )}
+                        </div>
                         </li>
                     </ul>
                 </nav>
