@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Modal } from 'reactstrap';
-import ApiService from '../apis/ApiService';
 import TMDBMovieApiService from '../apis/TMDBMovieApiService';
 
 class DetailContentCompoent extends Component {
@@ -15,8 +14,17 @@ class DetailContentCompoent extends Component {
       //전달받은 포스터 이미지를 그대로 보여줌
       poster_image:
         'http://image.tmdb.org/t/p/w500' + this.props.movie.poster_path,
-    };
-  }
+      cnt: 0, //로그아웃
+      onLogin: this.onLogin,
+      sessionStorage
+      }
+    }
+    // Login Func
+  onLogin = () => {
+      this.setState({
+        cnt: 1
+      })
+    }
 
   //이미지 클릭시 필요한 데이터를 모두 호출 하는메서드
   getAllInfo = () => {
@@ -106,29 +114,38 @@ class DetailContentCompoent extends Component {
   toggle = () => {
     this.setState({ modal: !this.state.modal });
   };
+   
+  loginCkeck = () => {
+    if(sessionStorage.getItem("user") != null){
+     alert('찜목록 저장완료!');
+    }
+    else {
+      alert('로그인 후 사용가능합니다. \n 👉👉👉로그인 페이지로 이동합니다👉👉👉');
+      return(window.location.href ='/login');
+    }
+  };
 
   render() {
     return (
       <div>
         <div className="btn bg-transparent" onClick={this.toggle}>
           {/* {images} */}
-          {this.state.poster_image === 'http://image.tmdb.org/t/p/w500null' ? (
-            <img
-              alt=""
-              src={'https://i.ytimg.com/vi/GV3HUDMQ-F8/maxresdefault.jpg'}
-              height="270"
-              width="180"
-              style={{ margin: '5px' }}
-            />
-          ) : (
-            <img
-              src={this.state.poster_image}
-              width="180px"
-              alt="new"
-              style={{ borderRadius: 5 }}
-              onClick={this.getAllInfo}
-            />
-          )}
+          {(this.state.poster_image === 'http://image.tmdb.org/t/p/w500null') ?
+          <img
+            alt=""
+            src={"https://i.ytimg.com/vi/GV3HUDMQ-F8/maxresdefault.jpg"}
+            height="270"
+            width="180"
+            style={{margin: '5px'}}
+          /> :
+          <img
+            src={this.state.poster_image}
+            width="180px"
+            alt="new"
+            style={{ borderRadius: 5 }}
+            onClick={this.getAllInfo}
+          />
+  }
         </div>
         <Modal
           isOpen={this.state.modal}
@@ -175,6 +192,7 @@ class DetailContentCompoent extends Component {
                         type="button"
                         value="❤"
                         style={{ margin: 5, borderRadius: 20 }}
+                        onClick={()=> this.loginCkeck(sessionStorage.getItem)}
                       />
                     </div>
                   </div>
@@ -214,12 +232,6 @@ class DetailContentCompoent extends Component {
                       {this.state.genres && this.seperactor(this.state.genres)}
                     </div>
                   </div>
-                  {/* <div style={{ flexDirection: 'row', marginBottom: 10 }}>
-                    <div style={{ textDecoration: 'none', color: '#777777' }}>
-                      영화 특징
-                    </div>
-                    <div className="detailFont">특징</div>
-                  </div> */}
                 </div>
               </div>
             </div>
@@ -243,35 +255,11 @@ class DetailContentCompoent extends Component {
                 <div className="comment"></div>
               </div>
             </div>
-            {/* 비슷한 콘텐츠 부분 */}
-            {/* <div className="row" style={{ paddingLeft: '24px', marginTop: 15 }}>
-              <div className="col">
-                <div className="similar" style={{ marginTop: 20 }}>
-                  <p className="sfont">비슷한 콘텐츠</p>
-                </div>
-              </div>
-            </div> */}
-            {/* <div
-              className="row"
-              style={{ marginBottom: 20, paddingLeft: '24px' }}
-            >
-              <div className="col">
-                <div className="similar">
-                  {this.state.similarMovies 
-            ? this.state.similarMovies.slice(0, 4).map((item) => {
-                return (
-                  <DetailContent id={item.id} movie={item}></DetailContent>
-                );
-              })
-            : ''}
-                </div>
-              </div>
-            </div> */}
           </div>
         </Modal>
       </div>
     );
   }
-}
+};
 
 export default DetailContentCompoent;
