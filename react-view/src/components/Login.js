@@ -2,10 +2,11 @@
 import React, { useState } from 'react';
 import '../styles/Login.css';
 import { Redirect } from 'react-router-dom';
+import UserApiService from '../apis/UserApiService';
 
-import AuthenticationService from '../apis/AuthenticationService';
 
 function Login({ authenticated, login, location }) {
+    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -25,15 +26,17 @@ function Login({ authenticated, login, location }) {
             setEmail('');
             setPassword('');
         }
-        AuthenticationService
-            .executeJwtAuthenticationService(this.state.email, this.state.password)
-            .then((response) => {
-            AuthenticationService.registerSuccessfulLoginForJwt(this.state.email,response.data.token)
-            this.props.history.push(`/main/${this.state.email}`)
-        }).catch( () =>{
-            this.setState({showSuccessMessage:false})
-            this.setState({hasLoginFailed:true})
-        })
+        UserApiService.loginOk()
+            .then(res => {
+                console.log(res.data);
+                let user=res.data;
+                sessionStorage.setItem("user",user);
+                alert('로그인 성공!');
+            })
+            .catch(err=> {
+                console.error('UserApiService.loginOk error :', err);
+                alert('로그인 오류 \n 관리자에게 문의바랍니다.🤦‍♀️');
+            })        
     };
 
 
