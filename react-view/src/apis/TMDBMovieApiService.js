@@ -22,6 +22,9 @@ class TMDBMovieApiService {
   getSimilarMovies(id) {
     return Axios.get(SPRING_API_URL + 'similar?id=' + id);
   }
+  getAllMovies(page) {
+    return Axios.get(SPRING_API_URL + 'discover?page=' + page);
+  }
 }
 
 export default new TMDBMovieApiService();
