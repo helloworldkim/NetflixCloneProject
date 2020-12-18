@@ -272,5 +272,55 @@ public class MovieService {
 	        
 			return response.getBody().toString();
 	}
+
+	//유사한 영화정보 받기
+		public String searchSimilarMoviesByid(String page,String id) {
+//			https://api.themoviedb.org/3/movie/590706/similar?api_key=2daa7f8ee3c810361492a3382e06545d&page=1
+			 String api_key ="2daa7f8ee3c810361492a3382e06545d";
+				String language = "ko-KR";
+				String url = "https://api.themoviedb.org/3/movie/"+id+"/similar";
+				
+				// RestTemplate 생성
+			        RestTemplate rt = new RestTemplate();
+					UriComponents builder = UriComponentsBuilder.fromHttpUrl(url)
+							.queryParam("page", page)
+							.queryParam("language", language)
+							.queryParam("api_key", api_key)
+							.build(false);    //자동으로 encode해주는 것을 막기 위해 false
+					String uri = builder.toUriString();
+			        ResponseEntity<String> response =  rt.exchange(
+			        		uri,
+			        		HttpMethod.GET,
+			        		null,
+			        		String.class
+		   		);
+		        return response.getBody().toString();
+		}
+		//영화정보 받기 페이지값 받으면 해당페이지(20개씩)
+		public String getAllMovies(String page) {
+//			https://api.themoviedb.org/3/discover/movie?api_key=<<api_key>>&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1
+			 String api_key ="2daa7f8ee3c810361492a3382e06545d";
+				String language = "ko-KR";
+				String url = "https://api.themoviedb.org/3/discover/movie";
+				
+				// RestTemplate 생성
+			        RestTemplate rt = new RestTemplate();
+					UriComponents builder = UriComponentsBuilder.fromHttpUrl(url)
+							.queryParam("page", page)
+							.queryParam("language", language)
+							.queryParam("api_key", api_key)
+							.build(false);    //자동으로 encode해주는 것을 막기 위해 false
+					String uri = builder.toUriString();
+					System.out.println(uri);
+			        ResponseEntity<String> response =  rt.exchange(
+			        		uri,
+			        		HttpMethod.GET,
+			        		null,
+			        		String.class
+		   		);
+		        return response.getBody().toString();
+		}
+	
+
 	
 }

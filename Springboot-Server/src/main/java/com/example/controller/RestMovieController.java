@@ -86,4 +86,23 @@ public class RestMovieController {
 			Object result = movieService.getMovieVideo(id);
 			 return result;
 		}
+
+		//tmdb api 영화의 id값 전달해주면 해당값과 비슷한 영화 프로그램을 찾아서 전달해줌
+		@GetMapping(value ="/api/movie/similar")
+		public String searchSimilarTvShowsByid(@RequestParam(value = "page",defaultValue = "1")String page,
+				@RequestParam(value = "id",required = true) String id) {
+			String result=movieService.searchSimilarMoviesByid(page, id);
+			
+			return result;
+		}
+		
+		//그냥 영화데이터 전부 받아옴 20개씩 받기때문에 다음걸 받기위해선 페이지 필수
+		@GetMapping(value ="/api/movie/discover")
+		public String getAllMovies(@RequestParam(value = "page",defaultValue = "1")String page) {
+			System.out.println();
+			String result=movieService.getAllMovies(page);
+			
+			return result;
+		}
+
 }
