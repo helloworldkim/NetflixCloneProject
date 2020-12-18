@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal } from 'reactstrap';
 import TMDBMovieApiService from '../apis/TMDBMovieApiService';
+import FavoriteMovieApiService from '../apis/FavoriteMovieApiService';
 
 class DetailContentCompoent extends Component {
   constructor(props) {
@@ -25,6 +26,39 @@ class DetailContentCompoent extends Component {
         cnt: 1
       })
     }
+
+  //찜한 목록 추가
+  handleMovieSave = async () => {
+    var temp = {
+      movie_id : this.state.id,
+      movie_original_title : this.props.movie.original_title,
+      poster_path : this.props.movie.poster_path,
+      user_email : 'test용'
+    };
+    console.log(temp);
+    await FavoriteMovieApiService.addMovie(temp)
+      .then(res => {
+        console.info('저장성공', res.state);
+        alert("찜 했습니다.");
+      })
+      .catch(err => {
+        console.error('ApiService.addMovies 에러', err);
+        alert('찜 목록 저장 오류\n관리자 문의 바람');
+      })
+  }
+
+  handleMovieDelete = async () => {
+    await FavoriteMovieApiService.removeMovie(this.state.id)
+    .then(res => {
+      console.info('삭제성공', res.state);
+      alert("삭제했습니다.");
+      //리로드
+    })
+    .catch(err => {
+      console.error('ApiService.removeMovie 에러', err);
+      alert('찜 목록 삭제 오류\n관리자 문의 바람');
+    })
+  }
 
   //이미지 클릭시 필요한 데이터를 모두 호출 하는메서드
   getAllInfo = () => {
@@ -114,16 +148,16 @@ class DetailContentCompoent extends Component {
   toggle = () => {
     this.setState({ modal: !this.state.modal });
   };
-   
-  loginCkeck = () => {
-    if(sessionStorage.getItem("user") != null){
-     alert('찜목록 저장완료!');
-    }
-    else {
-      alert('로그인 후 사용가능합니다. \n 👉👉👉로그인 페이지로 이동합니다👉👉👉');
-      return(window.location.href ='/login');
-    }
-  };
+  // 로그인 안하면 찜하기버튼이랑 삭제버튼 안보여줄거임 
+  // loginCkeck = () => {
+  //   if(sessionStorage.getItem("user") != null){
+  //    alert('찜목록 저장완료!');
+  //   }
+  //   else {
+  //     alert('로그인 후 사용가능합니다. \n 👉👉👉로그인 페이지로 이동합니다👉👉👉');
+  //     return(window.location.href ='/login');
+  //   }
+  // };
 
   render() {
     return (
@@ -187,13 +221,23 @@ class DetailContentCompoent extends Component {
                         value="▶ 재생"
                         style={{ margin: 5 }}
                       />
-                      <input
-                        className="btn btn-light btn-lg"
-                        type="button"
-                        value="❤"
-                        style={{ margin: 5, borderRadius: 20 }}
-                        onClick={()=> this.loginCkeck(sessionStorage.getItem)}
-                      />
+                      {sessionStorage.getItem("user") != null ?
+                        (<input
+                          className="btn btn-light btn-lg"
+                          type="button"
+                          value="❤"
+                          style={{ margin: 5, borderRadius: 20 }}
+                          onClick={() => this.handleMovieSave()}
+                        />,
+                        <input
+                          className="btn btn-light btn-lg"
+                          type="button"
+                          value="❌ "
+                          style={{ margin: 5, borderRadius: 20 }}
+                          onClick={() => this.handleMovieDelete(this.state.id)}
+                        />) :
+                        '' 
+                      } 
                     </div>
                   </div>
                 </div>
