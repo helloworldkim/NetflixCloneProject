@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Slider from 'react-slick';
 import Fade from 'react-reveal';
 import DetailContent from './DetailContent';
 

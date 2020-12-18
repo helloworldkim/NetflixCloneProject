@@ -3,14 +3,21 @@ import Fade from 'react-reveal';
 import DetailContent from './DetailContent';
 import Pagenation from './Pagenation';
 
-const MoviesRow = ({ movies, totalpage, page, totalresults, pageHandler }) => {
+const MoviesRow = ({
+  movies,
+  totalpage,
+  page,
+  totalresults,
+  pageHandler,
+  title,
+}) => {
   console.log('props의 movies:', movies);
   return (
     <div>
       <Fade bottom>
         <div className="row">
           <div className="col">
-            <h3 style={{ color: 'white', fontWeight: 'bold' }}>영화 리스트</h3>
+            <h3 style={{ color: 'white', fontWeight: 'bold' }}>{title}</h3>
           </div>
           <div className="col">
             <Pagenation

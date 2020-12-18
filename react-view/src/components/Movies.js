@@ -7,6 +7,7 @@ class Movies extends Component {
     super(props);
     this.state = {
       page: 1,
+      title: '영화리스트',
     };
   }
 
@@ -59,6 +60,7 @@ class Movies extends Component {
         <div className="row">
           <div className="col">
             <MoviesRow
+              title={this.state.title}
               movies={this.state.movies}
               totalpage={this.state.totalpage}
               page={this.state.page}

@@ -23,7 +23,10 @@ class TMDBMovieApiService {
     return Axios.get(SPRING_API_URL + 'similar?id=' + id);
   }
   getAllMovies(page) {
-    return Axios.get(SPRING_API_URL + 'discover?page=' + page);
+    return Axios.get(SPRING_API_URL + 'toprated?page=' + page);
+  }
+  getPopularMovies(page) {
+    return Axios.get(SPRING_API_URL + 'popular?page=' + page);
   }
 }
 

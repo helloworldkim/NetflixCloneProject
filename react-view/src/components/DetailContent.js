@@ -15,9 +15,9 @@ class DetailContentCompoent extends Component {
       //전달받은 포스터 이미지를 그대로 보여줌
       poster_image:
         'http://image.tmdb.org/t/p/w500' + this.props.movie.poster_path,
-      };
-    }
-    
+    };
+  }
+
   //이미지 클릭시 필요한 데이터를 모두 호출 하는메서드
   getAllInfo = () => {
     this.getMovieDetails();
@@ -106,28 +106,29 @@ class DetailContentCompoent extends Component {
   toggle = () => {
     this.setState({ modal: !this.state.modal });
   };
-    
+
   render() {
     return (
       <div>
         <div className="btn bg-transparent" onClick={this.toggle}>
           {/* {images} */}
-          {(this.state.poster_image === 'http://image.tmdb.org/t/p/w500null') ?
-          <img
-            alt=""
-            src={"https://i.ytimg.com/vi/GV3HUDMQ-F8/maxresdefault.jpg"}
-            height="270"
-            width="180"
-            style={{margin: '5px'}}
-          /> :
-          <img
-            src={this.state.poster_image}
-            width="180px"
-            alt="new"
-            style={{ borderRadius: 5 }}
-            onClick={this.getAllInfo}
-          />
-  }
+          {this.state.poster_image === 'http://image.tmdb.org/t/p/w500null' ? (
+            <img
+              alt=""
+              src={'https://i.ytimg.com/vi/GV3HUDMQ-F8/maxresdefault.jpg'}
+              height="270"
+              width="180"
+              style={{ margin: '5px' }}
+            />
+          ) : (
+            <img
+              src={this.state.poster_image}
+              width="180px"
+              alt="new"
+              style={{ borderRadius: 5 }}
+              onClick={this.getAllInfo}
+            />
+          )}
         </div>
         <Modal
           isOpen={this.state.modal}
