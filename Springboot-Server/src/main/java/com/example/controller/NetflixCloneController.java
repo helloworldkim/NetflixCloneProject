@@ -18,7 +18,7 @@ import com.example.vo.NetflixCloneVO;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/netflix")
+@RequestMapping("/mylist")
 
 public class NetflixCloneController {
 	

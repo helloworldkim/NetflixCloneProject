@@ -13,23 +13,25 @@
 		parameterType="com.example.vo.NetflixCloneVO">
 		INSERT INTO favorite_movie_list
 			(
-				movie_id
+				movie_id,
 				movie_original_title,
-				movie_save_date
-				user_email
+				movie_save_date,
+				user_email,
+				poster_path
 			)
 		VALUES
 			(
-				#{moive_id}
+				#{movie_id},
 				#{movie_original_title},
-				NOW()
-				#{user_email}
+				NOW(),
+				#{user_email},
+				#{poster_path}
 			)
 		
 	</insert>
 	
 	<delete id="removeMovie" parameterType="Long">
-		DELETE FROM favorite_movie_list WHERE id = #{id}
+		DELETE FROM favorite_movie_list WHERE movie_id = #{id}
 	</delete>
 
 </mapper>
