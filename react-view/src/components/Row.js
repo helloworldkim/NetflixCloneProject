@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import Fade from 'react-reveal';
+import Slider from "react-slick";
 import DetailContent from './DetailContent';
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const Row = ({
   actions,
@@ -19,97 +23,141 @@ const Row = ({
   // console.log('props의 fantasys:', fantasys);
   // console.log('props의 horrors:', horrors);
 
-  // const slideSettings = {
-  //   dots: true,
-  //   infinite: true,
-  //   slidesToShow: 3,
-  //   slidesToScroll: 3,
-  //   pauseOnHover: true,
-  // };
+  const settings = {  // Slider settings
+    className : "slider variable-width",
+    dots : false,
+    infinite : true,
+    centerMode : true,
+    slidesToShow : 1,
+    slidesToScroll : 1,
+    variableWidth : true,
+  };
   return (
     <div>
       <Fade bottom>
-        <h3 style={{ color: 'white', fontWeight: 'bold' }}>액션</h3>
+        <h3 className='titleFont'>액션</h3>
         <div className="row">
-          {actions
-            ? actions.slice(0, 8).map((item) => {
-                return (
-                  <DetailContent id={item.id} movie={item}></DetailContent>
-                );
-              })
-            : ''}
+          <div className='col'>
+            <Slider {...settings}>
+              {actions
+                ? actions.map((item) => {
+                    return (
+                      <div className='slick'>
+                        <DetailContent id={item.id} movie={item}></DetailContent>
+                      </div>
+                    );
+                  })
+                : ''}
+            </Slider>
+          </div>
         </div>
       </Fade>
       <Fade bottom>
-        <h3 style={{ color: 'white', fontWeight: 'bold' }}>어드벤쳐</h3>
+        <h3 className='titleFont'>어드벤쳐</h3>
         <div className="row">
-          {adventures
-            ? adventures.slice(0, 8).map((item) => {
-                return (
-                  <DetailContent id={item.id} movie={item}></DetailContent>
-                );
-              })
-            : ''}
+          <div className='col'>
+            <Slider {...settings}>
+              {adventures
+                ? adventures.map((item) => {
+                    return (
+                      <div className='slick'>
+                        <DetailContent id={item.id} movie={item}></DetailContent>
+                      </div>
+                    );
+                  })
+                : ''}
+            </Slider>
+          </div>
         </div>
       </Fade>
       <Fade bottom>
-        <h3 style={{ color: 'white', fontWeight: 'bold' }}>코미디</h3>
+        <h3 className='titleFont'>코미디</h3>
         <div className="row">
-          {comedys
-            ? comedys.slice(0, 8).map((item) => {
-                return (
-                  <DetailContent id={item.id} movie={item}></DetailContent>
-                );
-              })
-            : ''}
+          <div className='col'>
+            <Slider {...settings}>
+              {comedys
+                ? comedys.map((item) => {
+                    return (
+                      <div className='slick'>
+                        <DetailContent id={item.id} movie={item}></DetailContent>
+                      </div>
+                    );
+                  })
+                : ''}
+              </Slider>
+            </div>
         </div>
       </Fade>
       <Fade bottom>
-        <h3 style={{ color: 'white', fontWeight: 'bold' }}>다큐멘터리</h3>
+        <h3 className='titleFont'>다큐멘터리</h3>
         <div className="row">
-          {documentarys
-            ? documentarys.slice(0, 8).map((item) => {
-                return (
-                  <DetailContent id={item.id} movie={item}></DetailContent>
-                );
-              })
-            : ''}
+          <div className='col'>
+            <Slider {...settings}>
+              {documentarys
+                ? documentarys.map((item) => {
+                    return (
+                      <div className='slick'>
+                        <DetailContent id={item.id} movie={item}></DetailContent>
+                      </div>
+                    );
+                  })
+                : ''}
+              </Slider>
+            </div>
         </div>
       </Fade>
       <Fade bottom>
-        <h3 style={{ color: 'white', fontWeight: 'bold' }}>가족영화</h3>
+        <h3 className='titleFont'>가족영화</h3>
         <div className="row">
-          {familys
-            ? familys.slice(0, 8).map((item) => {
-                return (
-                  <DetailContent id={item.id} movie={item}></DetailContent>
-                );
-              })
-            : ''}
+          <div className='col'>
+            <Slider {...settings}>
+              {familys
+                ? familys.map((item) => {
+                    return (
+                      <div className='slick'>
+                        <DetailContent id={item.id} movie={item}></DetailContent>
+                      </div>
+                    );
+                  })
+                : ''}
+              </Slider>
+          </div>
         </div>
       </Fade>
       <Fade bottom>
-        <h3 style={{ color: 'white', fontWeight: 'bold' }}>판타지</h3>
+        <h3 className='titleFont'>판타지</h3>
         <div className="row">
-          {fantasys
-            ? fantasys.slice(0, 8).map((item) => {
-                return (
-                  <DetailContent id={item.id} movie={item}></DetailContent>
-                );
-              })
-            : ''}
+          <div className='col'>
+            <Slider {...settings}>
+              {fantasys
+                ? fantasys.map((item) => {
+                    return (
+                      <div className='slick'>
+                        <DetailContent id={item.id} movie={item}></DetailContent>
+                      </div>
+                    );
+                  })
+                : ''}
+              </Slider>
+            </div>
         </div>
       </Fade>
       <Fade bottom>
-        <h3 style={{ color: 'white', fontWeight: 'bold' }}>호러</h3>
+        <h3 className='titleFont'>호러</h3>
         <div className="row">
-          {horrors
-            ? horrors.slice(0, 8).map((item) => {
-                return (
-                  <DetailContent id={item.id} movie={item}></DetailContent>
-                );
-              })
-            : ''}
+          <div className='col'>
+            <Slider {...settings}>
+              {horrors
+                ? horrors.map((item) => {
+                    return (
+                      <div className='slick'>
+                        <DetailContent id={item.id} movie={item}></DetailContent>
+                      </div>
+                    );
+                  })
+                : ''}
+              </Slider>
+            </div>
         </div>
       </Fade>
     </div>

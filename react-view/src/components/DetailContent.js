@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Modal } from 'reactstrap';
 import TMDBMovieApiService from '../apis/TMDBMovieApiService';
 import FavoriteMovieApiService from '../apis/FavoriteMovieApiService';
+import * as Icon from 'react-bootstrap-icons';
 
 class DetailContentCompoent extends Component {
   constructor(props) {
@@ -108,7 +109,7 @@ class DetailContentCompoent extends Component {
           key:
             'https://youtube.com/embed/' +
             res.data.results[0].key +
-            '?autoplay=1',
+            '?autoplay=1&controls=0&rel=0&loop=1'
         },
         () => {
           // console.log('눌렀을때 youtubeKey값!', this.state.key);
@@ -199,6 +200,21 @@ class DetailContentCompoent extends Component {
           style={{ maxWidth: '900px', width: '80%' }}
         >
           <div className="container">
+            <div className='row'>
+              <a 
+                onClick={this.toggle} 
+                style={{
+                  paddingRight: '10px',
+                  margin: '5px',
+                  textDecoration: 'none',
+                  color: '#777777',
+                  fontWeight: 'bold',
+                  fontSize: 'x-large',
+                  flex: '1',
+                  textAlign: 'right'}}>
+                    <Icon.XCircleFill/>
+                  </a>
+            </div>
             <div className="row">
               <div className="col">
                 <div className="vedio">
@@ -207,6 +223,7 @@ class DetailContentCompoent extends Component {
                       title="Youtube Video Player"
                       className="video"
                       allowFullScreen
+                      frameBorder='0'
                       style={{
                         width: '100%',
                         height: '50vh',
@@ -230,6 +247,7 @@ class DetailContentCompoent extends Component {
                         type="button"
                         value="▶ 재생"
                         style={{ margin: 5 }}
+                        onClick={() => window.open(`${this.state.key}`,'_blank')}
                       />
                       {/* {sessionStorage.getItem("user") != null ?
                         (<input

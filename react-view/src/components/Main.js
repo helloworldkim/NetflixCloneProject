@@ -74,6 +74,7 @@ class MainPage extends Component {
               title="Youtube Video Player"
               className="video"
               allowFullScreen
+              frameBorder='0'
               style={{ width: '100%', height: '80vh' }}
             />
           </div>

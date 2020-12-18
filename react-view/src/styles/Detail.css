@@ -1,12 +1,3 @@
-.bg-color {
-    background: #181818;
-}
-
-.Modal {
-    width: 90%;
-    background-color: #181818;
-}
-
 .contentFont {
     font-size: large;
     color: #F7F7F7;
@@ -30,27 +21,34 @@
     padding: 0;
 }
 
-.Third-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-color: rgba(0,0,0,0.16);
-}
-
-.Third {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 320px;
-    border-radius: 10px;
-    background-color: #181818;
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
-    
+.titleFont {
+    color: white;
+    font-weight: bold;
 }
 
 .my-modal .modal-content {
     background-color: #181818;
+}
+
+.slick {
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transition: all 0.3s ease-in-out;
+}
+
+.slick:hover {
+    transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -o-transform: scale(1.2);
+}
+
+.modal-content  {
+    -webkit-border-radius: 30px !important;
+    -moz-border-radius: 30px !important;
+    border-radius: 30px !important; 
 }
