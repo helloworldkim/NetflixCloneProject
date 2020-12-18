@@ -105,4 +105,12 @@ public class RestMovieController {
 			return result;
 		}
 
+		//그냥 영화데이터 전부 받아옴 20개씩 받기때문에 다음걸 받기위해선 페이지 필수
+				@GetMapping(value ="/api/movie/toprated")
+				public String getTopratedMovies(@RequestParam(value = "page",defaultValue = "1")String page) {
+					System.out.println();
+					String result=movieService.getTopratedMovies(page);
+					
+					return result;
+				}
 }
