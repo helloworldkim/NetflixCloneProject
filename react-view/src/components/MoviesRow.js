@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Fade from 'react-reveal';
 import DetailContent from './DetailContent';
 import Pagenation from './Pagenation';
+import '../styles/Detail.css';
 
 const MoviesRow = ({
   movies,
@@ -33,7 +34,9 @@ const MoviesRow = ({
           {movies
             ? movies.map((item) => {
                 return (
-                  <DetailContent id={item.id} movie={item}></DetailContent>
+                  <div className='slick'>
+                    <DetailContent id={item.id} movie={item}></DetailContent>
+                  </div>
                 );
               })
             : ''}

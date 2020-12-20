@@ -58,17 +58,19 @@ class NewContent extends Component {
   };
   render() {
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col">
-            <MoviesRow
-              title={this.state.title}
-              movies={this.state.movies}
-              totalpage={this.state.totalpage}
-              page={this.state.page}
-              totalresults={this.state.totalresults}
-              pageHandler={this.pageHandler}
-            />
+      <div className='container-fluid' style={{backgroundColor: '#181818'}}>
+        <div className='container'>
+          <div className="row">
+            <div className="col">
+              <MoviesRow
+                title={this.state.title}
+                movies={this.state.movies}
+                totalpage={this.state.totalpage}
+                page={this.state.page}
+                totalresults={this.state.totalresults}
+                pageHandler={this.pageHandler}
+              />
+            </div>
           </div>
         </div>
       </div>

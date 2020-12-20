@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import '../styles/Main.css';
 
 class Join extends Component {
     render() {

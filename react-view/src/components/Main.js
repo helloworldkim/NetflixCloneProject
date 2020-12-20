@@ -66,7 +66,7 @@ class MainPage extends Component {
   };
   render() {
     return (
-      <div style={{ backgroundColor: '#181818' }}>
+      <div style={{ backgroundColor: '#181818', paddingRight: '15px' }}>
         <div className="row">
           <div className="col-12">
             <iframe

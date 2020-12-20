@@ -31,7 +31,7 @@ class Favorite extends Component {
             <section className='bg-color'>
             <div
             className='container-fluid'
-            style={{background: '#181818', flex: 1, height: '2000px'}}
+            style={{background: '#181818', flex: 1}}
             >
                 <div className='row'>
                     <div className='col'>
