@@ -15,6 +15,7 @@ const Row = ({
   familys,
   fantasys,
   horrors,
+  populars,
 }) => {
   //   console.log("props의 액션값:", actions);
   //   console.log("props의 adventures:", adventures);
@@ -54,6 +55,26 @@ const Row = ({
   };
   return (
     <div>
+      <Fade bottom>
+        <div className='rowStyle'>
+          <h3 className='titleFont'>인기 콘텐츠</h3>
+          <div className="row">
+            <div className='col'>
+              <Slider {...settings}>
+                {populars
+                  ? populars.map((item) => {
+                      return (
+                        <div className='slick'>
+                          <DetailContent id={item.id} movie={item}></DetailContent>
+                        </div>
+                      );
+                    })
+                  : ''}
+              </Slider>
+            </div>
+          </div>
+        </div>
+      </Fade>
       <Fade bottom>
         <div className='rowStyle'>
           <h3 className='titleFont'>액션</h3>

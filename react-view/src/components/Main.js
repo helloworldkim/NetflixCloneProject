@@ -29,10 +29,12 @@ class MainPage extends Component {
         "Fantasy",
         "Horror",
       ],
+      populars: '',
     };
   }
   componentDidMount() {
     this.getAllMoviesByGenre();
+    this.getMainPopularMovies();
   }
 
   getAllMoviesByGenre = async () => {
@@ -78,6 +80,15 @@ class MainPage extends Component {
         });
     }
   };
+  getMainPopularMovies = async () => {
+    await TMDBMovieApiService.getPopularMovies(1)
+      .then((res) => {
+        this.setState({ populars: res.data.results }, () => {});
+      })
+      .catch((err) => {
+        console.error('getMainPopularMovies 오류 : ', err)
+      });
+  };
   render() {
     return (
       <div style={{ backgroundColor: "#181818", paddingRight: "15px" }}>
@@ -118,6 +129,7 @@ class MainPage extends Component {
               familys={this.state.familys}
               fantasys={this.state.fantasys}
               horrors={this.state.horrors}
+              populars={this.state.populars}
             />
           </div>
         </div>
