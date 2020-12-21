@@ -55,6 +55,7 @@ class MainNavbar extends Component {
               </a>
             </li>
             <li className="nav-item">
+              {(sessionStorage.getItem('user') !== null) ?
               <a
                 className="nav-link"
                 href="/myContent"
@@ -62,6 +63,8 @@ class MainNavbar extends Component {
               >
                 내가 찜한 콘텐츠
               </a>
+              : ''
+              } 
             </li>
           </ul>
           <ul className="nav justify-content-end">

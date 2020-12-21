@@ -11,9 +11,13 @@ class MainPage extends Component {
     //   props.location.search.replace("?", "").split("=")
     // );
     //페이스북 로그인했을때 아이디값이 queryString으로 날아옴! 해당부분 받아서 세션 저장하는 부분임
-    let id = props.location.search.replace("?", "").split("=");
-    console.log(id[1]);
-    sessionStorage.setItem("user", id[1]);
+    console.log(props.location.search);
+    if(props.location.search!==''){
+      let id = props.location.search.replace("?", "").split("=");
+      console.log(id);
+      console.log(id[1]);
+      sessionStorage.setItem("user", id[1]);
+    }
     this.state = {
       //   genre: ['28', '12', '35', '99', '10751', '14', '27'],
       genre: [

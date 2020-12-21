@@ -8,6 +8,7 @@ class DetailContentCompoent extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      user_id: this.props.user_id,
       id: this.props.id,
       movie: this.props.movie,
       modal: false, //기본 모달값 false
@@ -29,21 +30,32 @@ class DetailContentCompoent extends Component {
     }
 
   //찜한 목록 추가
+  
   handleMovieSave = async () => {
     var temp = {
       movie_id : this.state.id,
       movie_original_title : this.props.movie.original_title,
       poster_path : this.props.movie.poster_path,
-      user_email : 'test용'
+      user_id : window.sessionStorage.getItem("user"),
+      // user_email : JSON.parse(window.sessionStorage.getItem("user")).email,
     };
     console.log(temp);
+    
     await FavoriteMovieApiService.addMovie(temp)
       .then(res => {
-        console.info('저장성공', res.state);
-        alert("찜 했습니다.");
-        this.setState({
-          modal: false,
-        })
+        console.log(res.data);
+        if (res.data === 'success') {
+          console.info('저장성공', res.state);
+          alert("찜 했습니다.");
+          this.setState({
+            modal: false,
+          })
+        } else {
+          alert("이미 찜목록에 있습니다.");
+          this.setState({
+            modal: false,
+          })
+        }
       })
       .catch(err => {
         console.error('ApiService.addMovies 에러', err);
