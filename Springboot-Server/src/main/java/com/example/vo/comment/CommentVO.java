@@ -10,4 +10,5 @@ public class CommentVO {
     private String content;
     private java.sql.Date RegDt;
     private java.sql.Date ModDt;
+    private long user_id;
 }

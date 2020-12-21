@@ -18,6 +18,8 @@ public interface UserMapper {
 	@Select({"SELECT count(*) FROM user WHERE email=#{user.email} AND password=#{user.password}"})
 	int getUser(@Param("user") UserVO user);
 	
+	@Select({"SELECT email,name,RegDt,ModDt from user where id=#{user_id}"})
+	UserVO getUserInfoById(long user_id);
 	
 	UserVO getUserInfo(UserVO user);
 	UserVO getUserInfoForFacebook(String email);
