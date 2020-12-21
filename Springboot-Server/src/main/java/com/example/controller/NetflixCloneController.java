@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.mapper.NetflixCloneMapper;
@@ -25,12 +26,19 @@ public class NetflixCloneController {
 	@Autowired
 	NetflixCloneMapper mapper;
 	
-	@GetMapping
-	public List<NetflixCloneVO> fetchMovie() {
-		System.out.println(mapper.fetchMovie());
-		return mapper.fetchMovie();
+	@GetMapping("/{user_id}")
+	public List<NetflixCloneVO> fetchMovie(@PathVariable Long user_id) {
+		System.out.println(user_id);
+//		System.out.println(mapper.fetchMovie(item.getUser_email()));
+		return mapper.fetchMovie(user_id);
 	}
 	
+//	@GetMapping("/{movie_id}")
+//	public void isMovie(Long movie_id) {
+//		System.out.println("무비아이디 확인=> " + movie_id);
+//		mapper.isMovie(movie_id);
+//	}	
+
 //	@GetMapping
 //	public List<NetflixCloneVO> fetchMovie(@PathVariable String user_email) {
 //		System.out.println("찜한목록볼 유저 이메일 => " + user_email);
@@ -38,9 +46,18 @@ public class NetflixCloneController {
 //	}
 	
 	@PostMapping
-	public void addMovie(@RequestBody NetflixCloneVO item) {
-		mapper.addMovie(item);
-		System.out.println("즐겨찾기 저장");
+	public String addMovie(@RequestBody NetflixCloneVO item) {
+		System.out.println(item.getUser_id());
+		System.out.println(item.getMovie_id());
+//		System.out.println(item.getUser_email());
+		int cnt = mapper.isMovie(item.getMovie_id(),item.getUser_id());
+		if(cnt == 0) {
+			mapper.addMovie(item);
+			System.out.println("즐겨찾기 저장");
+			return "success";
+		} else {
+			return "fail";
+		}
 	}
 	
 	@DeleteMapping("/{id}")
@@ -49,4 +66,5 @@ public class NetflixCloneController {
 		mapper.removeMovie(id);
 		System.out.println("즐겨찾기 삭제!");
 	}
+	
 }

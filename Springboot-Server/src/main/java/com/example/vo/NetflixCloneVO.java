@@ -10,6 +10,7 @@ public class NetflixCloneVO {
 
 	private Long ID;
 	private Long movie_id;
+	private Long user_id;
 	private String movie_original_title;
 	private LocalDateTime movie_save_date;
 	private String user_email;

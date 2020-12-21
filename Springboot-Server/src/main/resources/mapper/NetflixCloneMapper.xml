@@ -7,10 +7,21 @@
 	<select id="fetchMovie" resultType="com.example.vo.NetflixCloneVO" >
 		SELECT *
 		  FROM favorite_movie_list
-		  <!-- WHERE user_email = #{user_email} -->
+		  WHERE user_id = #{user_id}
 	  ORDER BY id
 	</select>
 	
+	<!-- 내가찜한목록에 있는지 없는지 여부확인 -->
+	<!-- <select id="isMovie" resultType ="Integer">
+		SELECT COUNT(*) CNT
+		  FROM favorite_movie_list
+		 WHERE movie_id = #{movie_id}
+	</select> -->
+	<select id="isMovie" resultType ="Integer">
+		SELECT COUNT(*) CNT
+		  FROM favorite_movie_list
+		 WHERE movie_id = #{movie_id} and user_id = #{user_id}
+	</select>
 	<insert id="addMovie"
 		parameterType="com.example.vo.NetflixCloneVO">
 		INSERT INTO favorite_movie_list
@@ -18,7 +29,7 @@
 				movie_id,
 				movie_original_title,
 				movie_save_date,
-				user_email,
+				user_id,
 				poster_path
 			)
 		VALUES
@@ -26,7 +37,7 @@
 				#{movie_id},
 				#{movie_original_title},
 				NOW(),
-				#{user_email},
+				#{user_id},
 				#{poster_path}
 			)
 		
