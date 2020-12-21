@@ -26,32 +26,40 @@ class SearchBar extends Component {
     handleSubmit = (e) => {
       e.preventDefault();
       if (sessionStorage.getItem("movies") != null) {
+          //재검색할때 앞서 검색된 데이터들을 세션값에서 지우고 다시 검색
           sessionStorage.removeItem("movies");
-          fetch(`https://api.themoviedb.org/3/search/movie?api_key=${this.apiKey}&query=${this.state.searchTerm}`)
-          .then(data => data.json())
-          .then(data => {
-            console.log(data);
-            // this.setState({movies: [data.results], totalResults: data.total_results})  //배열의 모든내용을 [...data.results] 배열로 가져온다.
-            this.setState({movies: [data.results]})
-            window.sessionStorage.setItem("movies", JSON.stringify(this.state.movies));
-            this.moveSearchMovie();
-            // setItem에서 데이터값을 저장하고난다음 무브서치무비함수를 실행
-        })
-          
-      } else if (sessionStorage.getItem("movies") == null) {
-        fetch(`https://api.themoviedb.org/3/search/movie?api_key=${this.apiKey}&query=${this.state.searchTerm}`)
-          .then(data => data.json())
-          .then(data => {
-            console.log(data);
-            // this.setState({movies: [data.results], totalResults: data.total_results})  //배열의 모든내용을 [...data.results] 배열로 가져온다.
-            this.setState({movies: [data.results]})
-            window.sessionStorage.setItem("movies", JSON.stringify(this.state.movies));
-            this.moveSearchMovie();
-            // setItem에서 데이터값을 저장하고난다음 무브서치무비함수를 실행
-          })
-      }
-        // this.props.handleFormSubmit(this.state.searchTerm);        
-    }
+          if(this.state.searchTerm !== '') {
+              fetch(`https://api.themoviedb.org/3/search/movie?api_key=${this.apiKey}&query=${this.state.searchTerm}`)
+              .then(data => data.json())
+              .then(data => {
+                console.log(data);
+                this.setState({movies: [data.results]})
+                window.sessionStorage.setItem("movies", JSON.stringify(this.state.movies));
+                this.moveSearchMovie();
+                // setItem에서 데이터값을 저장하고난다음 무브서치무비함수를 실행
+            })
+          }// if end
+          else {
+              alert('검색어를 입력해 주세요');
+          }// else end
+        }// if end
+      else if (sessionStorage.getItem("movies") == null) {
+            if(this.state.searchTerm !== '') {
+                fetch(`https://api.themoviedb.org/3/search/movie?api_key=${this.apiKey}&query=${this.state.searchTerm}`)
+                  .then(data => data.json())
+                  .then(data => {
+                    console.log(data);
+                    this.setState({movies: [data.results]})
+                    window.sessionStorage.setItem("movies", JSON.stringify(this.state.movies));
+                    this.moveSearchMovie();
+                    // setItem에서 데이터값을 저장하고난다음 무브서치무비함수를 실행
+                  })
+              }//if end 
+              else {
+                  alert('검색어를 입력해 주세요');
+              }// else end
+            }//else if end
+    }//handlesubmit end
 
     render() {
         return (
@@ -62,7 +70,6 @@ class SearchBar extends Component {
                             className="form-control mr-sm-2"
                             type="text" placeholder="Search"
                             onChange={this.handleChange}
-                            // value={this.state.searchTerm}
                         />
                         <button
                             className="btn btn-success"
@@ -71,8 +78,8 @@ class SearchBar extends Component {
                             // 여기서 쓰면 버튼을 눌렀을때 
                             // 핸들서브밋과 무브서치무비를 
                             // 같이 실행해서 데이터를 받기전에 
-                            // 넘어가는 경우가생김 그걸방지하기위해서 
-                            // 데이터를 받고난다음에 넘어가도록 만들어둠
+                            // 넘어가는 경우가생김 36~7 번째줄
+                            // 데이터를 저장하고 검색한영화들 보여주는 화면으로 넘어감
                         >
                             <Icon.Search/>
                         </button>

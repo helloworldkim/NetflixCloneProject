@@ -2,22 +2,17 @@ import React from 'react';
 import DetailContent from './DetailContent';
 import Fade from 'react-reveal';
     
-const IMG_API = "https://image.tmdb.org/t/p/w154";
+// const IMG_API = "https://image.tmdb.org/t/p/w154";
 
 const SearchMovie = () => {
-    // const movies = window.sessionStorage.getItem("movies");
-    // console.log(movies);
-    // let title = window.sessionStorage.getItem("title");
     let resultImage=null;
     if (window.sessionStorage.getItem("movies") != null) {
 
         let result = JSON.parse(window.sessionStorage.getItem("movies"));
         console.log("데이터가 있는결과 : ", result);
-        //debugger;
+        //SearchBar에 입력한 키워드에대한 데이터가 있으면 목록을 보여주고 없으면 35번라인 else로 내려감
         if (result[0].length > 0) {
             resultImage = result[0].map(item => {
-            // console.log(item.title);
-                //debugger;
                 
                 return (
                     <DetailContent id={item.id} movie={item} />
@@ -47,8 +42,13 @@ const SearchMovie = () => {
     } 
     return (
         <Fade bottom>
-            <div className="row" style={{backgroundColor: '#181818'}}>
-                {resultImage}
+            <div className="container-fluid" style={{backgroundColor: '#181818'}}>
+                <div className="container">
+                    <h3 style={{color: 'white', fontWeight: 'bold', marginBottom: 20}}>검색 목록</h3>
+                    <div className="row">
+                            {resultImage}
+                    </div>
+                </div>
             </div>
         </Fade>
     )

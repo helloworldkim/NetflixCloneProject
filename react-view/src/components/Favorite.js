@@ -13,12 +13,13 @@ class Favorite extends Component {
     }
     
     componentDidMount(){
-        //로그인 세션이 있을때 그 유저아이디에따라 this.loadFavoriteMovie()함수 실행시키기
         this.loadFavoriteMovie();
     }
+    //유저아이디에따라 this.loadFavoriteMovie()함수 실행시키기
     loadFavoriteMovie = async () => {
+        //삭제하고나서 남은목록의영화데이터를 지워주고(지운영화의 이미지가 남아있고 새로고침해야지 정상작동하는 오류때문에) 밑에서 다시불러옴
         this.setState({movies:''})
-        console.log('유저이메일 : ', this.state.user_id);
+        console.log('유저아이디 : ', this.state.user_id);
 
         await FavoriteMovieApiService.fetchMovie(this.state.user_id)
             .then(res => {
@@ -40,10 +41,10 @@ class Favorite extends Component {
             >
                 <div className='row'>
                     <div className='col'>
-                        <h1 style={{color: 'white'}}>내가 찜한 목록</h1>
-                        <div className='container-fluid'>
-                            <div className='row'>
-                                {/* <div className='col'> */}
+                        <div className="container-fluid" style={{backgroundColor: '#181818'}}>
+                            <div className="container">
+                                <h3 style={{color: 'white', fontWeight: 'bold', marginBottom: 20}}>내가 찜한 목록</h3>
+                                <div className="row">
                                     {this.state.movies ? this.state.movies.map((item) => {
                                         return (
                                             <DetailContent
@@ -56,7 +57,7 @@ class Favorite extends Component {
                                         );                                
                                         })
                                     :''}
-                                {/* </div> */}
+                                </div>
                             </div>
                         </div>
                     </div>

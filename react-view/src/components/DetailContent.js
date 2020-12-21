@@ -30,7 +30,6 @@ class DetailContentCompoent extends Component {
     }
 
   //찜한 목록 추가
-  
   handleMovieSave = async () => {
     var temp = {
       movie_id : this.state.id,
@@ -40,29 +39,36 @@ class DetailContentCompoent extends Component {
       // user_email : JSON.parse(window.sessionStorage.getItem("user")).email,
     };
     console.log(temp);
-    
-    await FavoriteMovieApiService.addMovie(temp)
-      .then(res => {
-        console.log(res.data);
-        if (res.data === 'success') {
-          console.info('저장성공', res.state);
-          alert("찜 했습니다.");
-          this.setState({
-            modal: false,
-          })
-        } else {
-          alert("이미 찜목록에 있습니다.");
-          this.setState({
-            modal: false,
-          })
-        }
-      })
-      .catch(err => {
-        console.error('ApiService.addMovies 에러', err);
-        alert('찜 목록 저장 오류\n관리자 문의 바람');
-      })
+    //유저세션값이 있을때(로그인)만 저장가능
+    if(sessionStorage.getItem('user') != null){
+      await FavoriteMovieApiService.addMovie(temp)
+        .then(res => {
+          console.log(res.data);
+          //해당 영화가 내가 찜한목록에 있는지 없는지 여부 판단.
+          if (res.data === 'success') {
+            console.info('저장성공', res.state);
+            alert("찜 했습니다.");
+            this.setState({
+              modal: false,
+            })
+          } else {
+            alert("이미 찜목록에 있습니다.");
+            this.setState({
+              modal: false,
+            })
+          }
+        })
+        .catch(err => {
+          console.error('ApiService.addMovies 에러', err);
+          alert('찜 목록 저장 오류\n관리자 문의 바람');
+        })
+        //로그인이 하지않으면 찜버튼눌렀을때 로그인화면으로 이동시킴
+    } else {
+      alert('로그인 후 이용하실 수 있습니다.');
+      window.location.href="http://localhost:3000/login";
+    }
   }
-
+  //찜한 목록 삭제
   handleMovieDelete = async () => {
     await FavoriteMovieApiService.removeMovie(this.props.databaseid)
     .then(res => {
@@ -261,24 +267,23 @@ class DetailContentCompoent extends Component {
                         style={{ margin: 5 }}
                         onClick={() => window.open(`${this.state.key}`,'_blank')}
                       />
-                      {/* {sessionStorage.getItem("user") != null ?
-                        (<input
+                        <input
                           className="btn btn-light btn-lg"
                           type="button"
                           value="❤"
                           style={{ margin: 5, borderRadius: 20 }}
                           onClick={() => this.handleMovieSave()}
-                        />,
+                        />
+                      {sessionStorage.getItem("user") != null ?
                         <input
                           className="btn btn-light btn-lg"
                           type="button"
                           value="❌ "
                           style={{ margin: 5, borderRadius: 20 }}
                           onClick={() => this.handleMovieDelete(this.state.id)}
-                        />) :
-                        '' 
-                      } */}
-                      <input
+                        />
+                        :''}
+                      {/* <input
                           className="btn btn-light btn-lg"
                           type="button"
                           value="❤"
@@ -291,7 +296,7 @@ class DetailContentCompoent extends Component {
                           value="❌ "
                           style={{ margin: 5, borderRadius: 20 }}
                           onClick={() => this.handleMovieDelete(this.state.id)}
-                        />
+                        /> */}
                     </div>
                   </div>
                 </div>
