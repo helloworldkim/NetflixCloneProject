@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import Fade from 'react-reveal';
-import DetailContent from './DetailContent';
-import Pagenation from './Pagenation';
-import '../styles/Detail.css';
+import React from "react";
+import Fade from "react-reveal";
+import DetailContent from "./DetailContent";
+import Pagenation from "./Pagenation";
+import "../styles/Detail.css";
 
 const MoviesRow = ({
   movies,
@@ -12,13 +12,13 @@ const MoviesRow = ({
   pageHandler,
   title,
 }) => {
-  console.log('props의 movies:', movies);
+  console.log("props의 movies:", movies);
   return (
     <div>
       <Fade bottom>
         <div className="row">
           <div className="col">
-            <h3 style={{ color: 'white', fontWeight: 'bold' }}>{title}</h3>
+            <h3 style={{ color: "white", fontWeight: "bold" }}>{title}</h3>
           </div>
           <div className="col">
             <Pagenation
@@ -34,12 +34,12 @@ const MoviesRow = ({
           {movies
             ? movies.map((item) => {
                 return (
-                  <div className='slick'>
+                  <div className="slick">
                     <DetailContent id={item.id} movie={item}></DetailContent>
                   </div>
                 );
               })
-            : ''}
+            : ""}
         </div>
       </Fade>
     </div>
