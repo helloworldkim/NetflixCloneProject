@@ -1,7 +1,5 @@
 package com.example.mapper.user;
 
-import java.util.Map;
-
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -21,5 +19,6 @@ public interface UserMapper {
 	int getUser(@Param("user") UserVO user);
 	
 	
-	Map<String,Object> getUserInfo(UserVO user);
+	UserVO getUserInfo(UserVO user);
+	UserVO getUserInfoForFacebook(String email);
 }

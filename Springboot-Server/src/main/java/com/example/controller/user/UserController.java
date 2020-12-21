@@ -1,12 +1,8 @@
 package com.example.controller.user;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,16 +47,16 @@ public class UserController {
 	}
 
 	@PostMapping("/login")
-	Map<String,Object> login(@RequestBody UserVO user, HttpSession httpSession) {
+	int login(@RequestBody UserVO user, HttpSession httpSession) {
 		System.out.println(user.toString());
-		int cnt = mapper.getUser(user);
-		Map<String,Object> myuser= new HashMap<>();
+		int cnt = mapper.getUser(user);	//유저 존재여부 확인
+		UserVO myuser =null;
 		if (cnt == 1) {
 			myuser= mapper.getUserInfo(user);
 			System.out.println(myuser.toString());
 			httpSession.setAttribute("USERID_SESSION", user.getEmail());
 		}
-		return myuser;
+		return myuser.getId();//회원의 인덱스값(아이디값을 보내줌)
 	}
 
 	@GetMapping("/logout")
@@ -67,6 +64,26 @@ public class UserController {
 		System.out.println("로그아웃함");
 		httpSession.invalidate();
 		return "로그아웃";
+	}
+	@PostMapping("/join")
+	int join(@RequestBody UserVO user, HttpSession httpSession) {
+		System.out.println(user.toString());
+		//동일한 이메일을 가진 회원이 있는지 체크
+		int cnt = mapper.isUser(user.getEmail());
+		if(cnt ==1) {
+			//회원가입 실패시 0 반환
+			return 0;
+		}else {
+			//회원가입 진행
+			int result = mapper.insertUser(user);
+//				결과값이 정상적으로 리턴됬을때 session에 저장할 user정보 호출
+				UserVO newUser = mapper.getUserInfo(user);
+				//서버에 이메일정보 저장
+				httpSession.setAttribute("USERID_SESSION", newUser.getEmail());
+				int userid= newUser.getId();
+			//성공시 해당 유저의 primarykey 정보 반환
+			return userid;
+		}
 	}
 	
 	//user/auth/facebook
@@ -77,7 +94,8 @@ public class UserController {
 	String oauthFacebookLogin(@RequestParam(value="code") String code,
 			HttpSession httpSession,
 			HttpServletResponse httpServletResponse,
-			HttpServletRequest  httpServletRequest) throws IOException, ServletException {
+			HttpServletRequest  httpServletRequest,
+			Model model) throws IOException, ServletException {
 		System.out.println("리디렉주소");
 		//제대로 정보입력해서 로그인 후 권한체크 되어있으면 redirect주소로 돌아와서 코드값을 받는다.
 		System.out.println("전달받은 코드값");
@@ -122,9 +140,10 @@ public class UserController {
 //		    access_token={access-token}
 		String url2 ="https://graph.facebook.com/me";
 		RestTemplate rt2 = new RestTemplate();
+//		public_profile,email,id
 		UriComponents builder2 = UriComponentsBuilder.fromHttpUrl(url2)
-//				.queryParam("fields", "id,name,email,picture")
-				.queryParam("fields", "email")
+				.queryParam("fields", "id,name,email")
+//				.queryParam("fields", "email")
 				.queryParam("access_token", access_token)
 				.queryParam("redirect_uri", "http://localhost:8090/user/auth/facebook")
 				.build(false); 
@@ -135,38 +154,46 @@ public class UserController {
 				HttpMethod.GET,
 				null,
 				String.class);
+		System.out.println(uri2);
 		System.out.println("토큰을 사용한 정보요청에 대한 응답");
 		System.out.println(response2.getBody());
-		OAuthToken forFacebookId=null;
+		OAuthToken facebookInfo=null;
 		try {
-			forFacebookId = objectMapper.readValue(response2.getBody(), OAuthToken.class);
+			facebookInfo = objectMapper.readValue(response2.getBody(), OAuthToken.class);
 		} catch (JsonMappingException e) {
 			e.printStackTrace();
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-		String facebookId = forFacebookId.getId();
+		String facebookId = facebookInfo.getId();
 		System.out.println("페이스북 고유아이디번호");
 		System.out.println(facebookId.toString());
+		System.out.println(facebookInfo.getName());
+//		System.out.println(facebookInfo.getEmail()); //이메일 없음
 		String registerId = "facebook_"+facebookId;//실제 회원가입 시킬 아이디(이메일)
+		System.out.println("가입진행할 아이디");
+		System.out.println(registerId);
 		String password = "임시비밀번호";	//null이 아닌 특정값! 사용할일 X 없으면 비밀번호없이 그냥 로그인 가능해짐
 		
 		//페이스북 아이디로 등록된 유저가 있는경우에는 session만들어서 로그인진행
 		int cnt =0;
-//		cnt = mapper.isUser(registerId);
+		cnt = mapper.isUser(registerId);
 		if(cnt==0) {//결과값이 없는경우
-			//없는경우에는 회원등록 후 session로그인 진행
+			//회원등록 후 session로그인 진행
+			UserVO facebookUser = new UserVO();
+			facebookUser.setEmail(registerId);//직접 제작한 useremail
+			facebookUser.setPassword(password);//비밀번호 임시값
+			facebookUser.setName("이름없음");//임시값
+			mapper.insertUser(facebookUser);
 			httpSession.setAttribute("USERID_SESSION", registerId);
-			httpServletResponse.sendRedirect("http://localhost:3000/");
+			httpServletResponse.sendRedirect("http://localhost:3000?id="+facebookUser.getId());
 		}else {//동일한 값이 있는경우
 			//해당 아이디 서버에 세션등록
 			httpSession.setAttribute("USERID_SESSION", registerId);
+			UserVO facebookUser = mapper.getUserInfoForFacebook(registerId);	//조합한 이메일로 유저정보 요청해서 받아옴
 			//로그인 후 홈경로로 보냄
-			httpServletResponse.sendRedirect("http://localhost:3000/");
+			httpServletResponse.sendRedirect("http://localhost:3000?id="+facebookUser.getId());
 		}
-		((ServletRequest) httpServletResponse).setAttribute("userId",registerId);
-		RequestDispatcher dispatcher = httpServletRequest.getRequestDispatcher("http://localhost:3000/");
-		dispatcher.forward(httpServletRequest, httpServletResponse);
-		return registerId;
+		return "페이스북 로그인";
 	}
 }
