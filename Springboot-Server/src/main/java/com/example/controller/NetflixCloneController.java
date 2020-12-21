@@ -60,11 +60,24 @@ public class NetflixCloneController {
 		}
 	}
 	
-	@DeleteMapping("/{id}")
-	public void removeMovie(@PathVariable Long id) {
-		System.out.println("삭제 즐겨찾기 아이디 => " + id);
-		mapper.removeMovie(id);
-		System.out.println("즐겨찾기 삭제!");
+//	@DeleteMapping("/{id}")
+//	public void removeMovie(@PathVariable Long id) {
+//		System.out.println("삭제 즐겨찾기 아이디 => " + id);
+//		mapper.removeMovie(id);
+//		System.out.println("즐겨찾기 삭제!");
+//	}
+	
+	@DeleteMapping("/{movie_id}")
+	public String removeMovie2(@PathVariable Long movie_id) {
+		System.out.println("삭제 즐겨찾기 아이디2 => " + movie_id);
+		int cnt = mapper.isMovie2(movie_id);
+		if(cnt == 1) {
+			mapper.removeMovie2(movie_id);
+			System.out.println("즐겨찾기 삭제2!");
+			return "success";
+		} else {
+			return "fail";
+		}
 	}
 	
 }

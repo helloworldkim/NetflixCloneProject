@@ -22,6 +22,13 @@
 		  FROM favorite_movie_list
 		 WHERE movie_id = #{movie_id} and user_id = #{user_id}
 	</select>
+	
+	<select id="isMovie2" resultType = "Integer">
+		SELECT COUNT(*) CNT
+		  FROM favorite_movie_list
+		 WHERE movie_id = #{movie_id}
+	</select>
+
 	<insert id="addMovie"
 		parameterType="com.example.vo.NetflixCloneVO">
 		INSERT INTO favorite_movie_list
@@ -45,6 +52,10 @@
 	
 	<delete id="removeMovie" parameterType="Long">
 		DELETE FROM favorite_movie_list WHERE id = #{id}
+	</delete>
+	
+	<delete id="removeMovie2" parameterType="Long">
+		DELETE FROM favorite_movie_list WHERE movie_id=#{movie_id}
 	</delete>
 
 </mapper>
