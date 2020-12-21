@@ -3,6 +3,9 @@ import Axios from "axios";
 const API_URL = "http://localhost:8090/user"; //spring boot back-end url
 
 class UserApiService {
+  joinUser(user) {
+    return Axios.post(API_URL + "/join", user);
+  }
   loginOk(user) {
     return Axios.post(API_URL + "/login", user);
   }

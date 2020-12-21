@@ -1,26 +1,36 @@
-import React, { Component } from 'react';
-import TMDBMovieApiService from '../apis/TMDBMovieApiService';
-import Row from './Row';
+import React, { Component } from "react";
+import TMDBMovieApiService from "../apis/TMDBMovieApiService";
+import Row from "./Row";
 
 class MainPage extends Component {
   constructor(props) {
     super(props);
+    // console.log("Main props", props);
+    // console.log(
+    //   "Main props",
+    //   props.location.search.replace("?", "").split("=")
+    // );
+    //페이스북 로그인했을때 아이디값이 queryString으로 날아옴! 해당부분 받아서 세션 저장하는 부분임
+    let id = props.location.search.replace("?", "").split("=");
+    console.log(id[1]);
+    sessionStorage.setItem("user", id[1]);
     this.state = {
       //   genre: ['28', '12', '35', '99', '10751', '14', '27'],
       genre: [
-        'Action',
-        'Adventure',
-        'Comedy',
-        'Documentary',
-        'Family',
-        'Fantasy',
-        'Horror',
+        "Action",
+        "Adventure",
+        "Comedy",
+        "Documentary",
+        "Family",
+        "Fantasy",
+        "Horror",
       ],
     };
   }
   componentDidMount() {
     this.getAllMoviesByGenre();
   }
+
   getAllMoviesByGenre = async () => {
     for (let i = 0; i < this.state.genre.length; i++) {
       //debugger;
@@ -34,7 +44,7 @@ class MainPage extends Component {
             case 1: // 어드벤처
               this.setState(
                 { adventures: res.data.results.slice(10) },
-                () => {},
+                () => {}
               );
               break;
             case 2: // 코미디
@@ -43,7 +53,7 @@ class MainPage extends Component {
             case 3: // 다큐멘터리
               this.setState(
                 { documentarys: res.data.results.slice(10) },
-                () => {},
+                () => {}
               );
               break;
             case 4: // 가족 영화
@@ -60,13 +70,13 @@ class MainPage extends Component {
           }
         })
         .catch((err) => {
-          console.error('getGenreList get 오류 : ', err);
+          console.error("getGenreList get 오류 : ", err);
         });
     }
   };
   render() {
     return (
-      <div style={{ backgroundColor: '#181818', paddingRight: '15px' }}>
+      <div style={{ backgroundColor: "#181818", paddingRight: "15px" }}>
         <div className="row">
           <div className="col-12">
             <iframe
@@ -74,8 +84,8 @@ class MainPage extends Component {
               title="Youtube Video Player"
               className="video"
               allowFullScreen
-              frameBorder='0'
-              style={{ width: '100%', height: '80vh' }}
+              frameBorder="0"
+              style={{ width: "100%", height: "80vh" }}
             />
           </div>
         </div>

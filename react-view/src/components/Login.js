@@ -32,15 +32,13 @@ function Login({ authenticated, location }) {
     console.log("입력한 유저정보", user);
     UserApiService.loginOk(user)
       .then((res) => {
+        // console.log(res.data);
+        let userid = res.data;
         //기존 값이 있을경우 삭제
         sessionStorage.removeItem("user");
         // console.log(res.data);
-        //데이터 json형태로 바꿔서 user정보 저장
-        sessionStorage.setItem("user", JSON.stringify(res.data));
-        //session에 등록된 해당 유저정보 호출방법
-        // let findeduser = sessionStorage.getItem("user");
-        // console.log("유저정보값:", JSON.parse(findeduser).id);
-        // console.log("유저정보값:", JSON.parse(findeduser).email);
+        //user정보에 userid값만 저장! 나머지값은 필요가없음!
+        sessionStorage.setItem("user", userid);
         alert("로그인 성공!");
         //로그인 성공시 홈경로로 보냄
         window.location.href = "http://localhost:3000";
@@ -95,7 +93,11 @@ function Login({ authenticated, location }) {
           Forgot <a href="#">password?</a>
         </p>
         <p style={{ marginTop: 150 }}>
-          <a href="https://www.facebook.com/" style={{ color: "#646564" }}>
+          {/* 페이스북로그인 요청 주소!  */}
+          <a
+            href="https://www.facebook.com/v2.11/dialog/oauth?client_id=770894283636482&redirect_uri=http://localhost:8090/user/auth/facebook"
+            style={{ color: "#646564" }}
+          >
             facebook으로 로그인 하기
           </a>
         </p>
