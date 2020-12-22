@@ -20,6 +20,10 @@ class FavoriteMovieApiService {
         return Axios.delete(API_URL + '/' + id);
     }
 
+    removeMovie2(movie_id) {
+        return Axios.delete(API_URL + '/' + movie_id);
+    }
+
     isMovie(movie_id) {
         return Axios.get(API_URL + '/' + movie_id);
     }
