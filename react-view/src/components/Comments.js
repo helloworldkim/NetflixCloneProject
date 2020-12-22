@@ -1,29 +1,7 @@
 import React, { Component } from "react";
 import { BsFillChatQuoteFill } from "react-icons/bs";
 import { MdContentCut } from "react-icons/md";
-import CommentApiService from "../apis/CommentApiService";
 
-const styles = {
-  root: {
-    width: "20%",
-    margin: "auto",
-    marginTop: 16,
-    padding: 16,
-    textAlign: "left",
-    backgroundColor: "#ffffff",
-    borderRadius: 16,
-  },
-  commentContainer: {
-    display: "inline-block",
-    marginLeft: 16,
-    textAlign: "left",
-    verticalAlign: "top",
-  },
-  contentText: {
-    color: "black",
-    fontSize: 16,
-  },
-};
 class Comments extends Component {
   constructor(props) {
     super(props);

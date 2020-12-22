@@ -176,13 +176,15 @@ class DetailContentCompoent extends Component {
     var seperactor = ",";
     var tempString = "";
     for (var i = 0; i < Array.length; i++) {
-      tempString += Array[i] + seperactor;
-      if (i === Array.length - 1) {
+      if (i < Array.length - 1) {
+        tempString += Array[i] + seperactor;
+      } else if (i === Array.length - 1) {
         tempString += Array[i];
       }
     }
     return tempString;
   };
+
   //true,false 값을 반대로 전환시키는 메서드
   toggle = () => {
     this.setState({ modal: !this.state.modal });
@@ -194,6 +196,12 @@ class DetailContentCompoent extends Component {
   //댓글 작성
   writeMovieComment = () => {
     let user_id = sessionStorage.getItem("user");
+    //로그인되어있는지 session값 체크
+    if (user_id == null) {
+      alert("로그인이 필요합니다");
+      //로그인 페이지로 보냄
+      window.location.href = "http://localhost:3000/login";
+    }
     let content = this.state.content;
     //객체생성
     let comment = {
