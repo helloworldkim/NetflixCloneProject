@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTDMapper3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.NetflixCloneMapper">
+	<!-- 로그인한 유저에따라 자기가 찜한 목록 보여주기 -->
+	<select id="fetchMovie" resultType="com.example.vo.NetflixCloneVO" >
+		SELECT *
+		  FROM favorite_movie_list
+		  WHERE user_id = #{user_id}
+	  ORDER BY id
+	</select>
+	
+	<!-- 내가찜한목록에 있는지 없는지 여부확인 -->
+	<!-- <select id="isMovie" resultType ="Integer">
+		SELECT COUNT(*) CNT
+		  FROM favorite_movie_list
+		 WHERE movie_id = #{movie_id}
+	</select> -->
+	<select id="isMovie" resultType ="Integer">
+		SELECT COUNT(*) CNT
+		  FROM favorite_movie_list
+		 WHERE movie_id = #{movie_id} and user_id = #{user_id}
+	</select>
+	
+	<select id="isMovie2" resultType = "Integer">
+		SELECT COUNT(*) CNT
+		  FROM favorite_movie_list
+		 WHERE movie_id = #{movie_id}
+	</select>
+
+	<insert id="addMovie"
+		parameterType="com.example.vo.NetflixCloneVO">
+		INSERT INTO favorite_movie_list
+			(
+				movie_id,
+				movie_original_title,
+				movie_save_date,
+				user_id,
+				poster_path
+			)
+		VALUES
+			(
+				#{movie_id},
+				#{movie_original_title},
+				NOW(),
+				#{user_id},
+				#{poster_path}
+			)
+		
+	</insert>
+	
+	<delete id="removeMovie" parameterType="Long">
+		DELETE FROM favorite_movie_list WHERE id = #{id}
+	</delete>
+	
+	<delete id="removeMovie2" parameterType="Long">
+		DELETE FROM favorite_movie_list WHERE movie_id=#{movie_id}
+	</delete>
+
+</mapper>

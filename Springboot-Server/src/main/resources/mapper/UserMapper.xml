@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTDMapper3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.user.UserMapper">
+	<select id="getUserInfo" parameterType="com.example.vo.user.UserVO" resultType="com.example.vo.user.UserVO">
+	SELECT id,email,name,RegDt,ModDt 
+	FROM user 
+	WHERE email=#{email} AND password=#{password}
+	</select>
+	
+		<select id="getUserInfoForFacebook" resultType="com.example.vo.user.UserVO">
+	SELECT id,email,name,RegDt,ModDt 
+	FROM user 
+	WHERE email=#{email}
+	</select>
+</mapper>

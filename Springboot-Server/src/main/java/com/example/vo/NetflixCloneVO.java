@@ -8,9 +8,11 @@ import lombok.Data;
 @Data
 public class NetflixCloneVO {
 
-	Long ID;
-	Long video_id;
-	String video_title;
-	String video_overview;
-	LocalDateTime video_save_date;
+	private Long ID;
+	private Long movie_id;
+	private Long user_id;
+	private String movie_original_title;
+	private LocalDateTime movie_save_date;
+	private String user_email;
+	private String poster_path;
 }
